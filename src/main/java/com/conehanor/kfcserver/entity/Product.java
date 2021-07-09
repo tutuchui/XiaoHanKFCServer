@@ -6,7 +6,6 @@ import javax.persistence.*;
 @Table(name = "product")
 public class Product {
 
-
     @Column(name = "id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
@@ -73,5 +72,18 @@ public class Product {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public Product(){
+
+    }
+
+    public Product(String id, String name, double price, String imageUrl, String category, String introduction) {
+        this.id = id;
+        this.name = name;
+        this.price = price;
+        this.imageUrl = imageUrl;
+        this.category = category;
+        this.introduction = introduction;
     }
 }
