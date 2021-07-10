@@ -1,12 +1,10 @@
 package com.conehanor.kfcserver.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "product_order_detail")
+@IdClass(ProductOrderDetailId.class)
 public class ProductOrderDetail {
     @Column(name = "order_id", nullable = false)
     @Id
@@ -19,6 +17,9 @@ public class ProductOrderDetail {
     @Column(name = "customer_id", nullable = false)
     @Id
     private String customerId;
+
+    @Column(name = "product_name", nullable = false)
+    private String productName;
 
     @Column(name = "product_count", nullable = false)
     private int productCount;
@@ -64,5 +65,14 @@ public class ProductOrderDetail {
 
     public void setPrice(double price) {
         this.price = price;
+    }
+
+
+    public String getProductName() {
+        return productName;
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
     }
 }

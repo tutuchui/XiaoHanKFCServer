@@ -1,26 +1,73 @@
 package com.conehanor.kfcserver.controller;
 
-import com.conehanor.kfcserver.dao.*;
-import com.conehanor.kfcserver.entity.*;
+import com.conehanor.kfcserver.constant.OrderConstant;
+import com.conehanor.kfcserver.dao.ProductOrderDetailRepository;
+import com.conehanor.kfcserver.dao.ProductOrderRepository;
+import com.conehanor.kfcserver.entity.ProductOrder;
+import com.conehanor.kfcserver.entity.ProductOrderDetail;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
+import java.lang.reflect.Type;
+import java.sql.Date;
 import java.sql.Timestamp;
-import java.util.Date;
 import java.util.List;
 
 @RestController
 public class OrderController {
 
     @Autowired
-    OrderRepository orderRepository;
+    ProductOrderDetailRepository productOrderDetailRepository;
 
-    @GetMapping("/getAllOrder")
+    @Autowired
+    ProductOrderRepository productOrderRepository;
+
+    @PostMapping("/submitOrder")
     @CrossOrigin
-    public String getAllOrder() {
-        return new Gson().toJson(1);
+    public String submitOrder(@RequestBody String requestBody){
+
+        int count = productOrderRepository.getOrderCount();
+        String orderId = String.format("%06d", count + 1);
+        double totalPrice = 0;
+        Type listType = new TypeToken<List<ProductOrderDetail>>() {}.getType();
+        List<ProductOrderDetail> productDetailOrders= new Gson().fromJson(requestBody, listType);
+
+        for(ProductOrderDetail productOrderDetail : productDetailOrders){
+            totalPrice += productOrderDetail.getPrice();
+        }
+
+        ProductOrder productOrder = new ProductOrder();
+        productOrder.setOrderId(orderId);
+        productOrder.setCustomerId(productDetailOrders.get(0).getCustomerId());
+        productOrder.setTotalPrice(totalPrice);
+        productOrder.setPaymentStatus(OrderConstant.UNPAID);
+        productOrder.setOrderStatus(OrderConstant.NOT_PREPARED);
+        productOrder.setOrderDate(new Timestamp(System.currentTimeMillis()));
+        productOrderRepository.saveAndFlush(productOrder);
+
+
+        for(ProductOrderDetail productOrderDetail : productDetailOrders){
+            productOrderDetail.setOrderId(orderId);
+            productOrderDetailRepository.saveAndFlush(productOrderDetail);
+        }
+
+        return "Success";
+    }
+
+    @GetMapping("/getOrderByCustomer")
+    @CrossOrigin
+    public String getOrderByCustomer(@RequestParam("phone") String phone){
+        List<ProductOrder> productOrderList = productOrderRepository.selectProductOrderByCustomer(phone);
+        return new Gson().toJson(productOrderList);
+    }
+
+    @GetMapping("/getOrderDetailById")
+    @CrossOrigin
+    public String getOrderDetailById(@RequestParam("orderId") int orderId){
+        String orderIdStr = String.format("%06d",orderId);
+        List<ProductOrderDetail> productOrderDetailList = productOrderDetailRepository.selectProductOrderByOrderId(orderIdStr);
+        return new Gson().toJson(productOrderDetailList);
     }
 }
