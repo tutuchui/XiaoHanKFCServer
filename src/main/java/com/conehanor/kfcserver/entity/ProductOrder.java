@@ -4,10 +4,13 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.io.Serializable;
+import java.sql.Date;
+import java.sql.Timestamp;
 
 @Entity
 @Table(name = "product_order")
-public class ProductOrder {
+public class ProductOrder implements Serializable {
     @Column(name = "order_id", nullable = false)
     @Id
     private String orderId;
@@ -18,11 +21,30 @@ public class ProductOrder {
     @Column(name = "payment_status", nullable = false)
     private int paymentStatus;
 
+    public int getOrderStatus() {
+        return orderStatus;
+    }
+
+    public void setOrderStatus(int orderStatus) {
+        this.orderStatus = orderStatus;
+    }
+
+    public Timestamp getOrderDate() {
+        return orderDate;
+    }
+
+    public void setOrderDate(Timestamp orderDate) {
+        this.orderDate = orderDate;
+    }
+
     @Column(name = "order_status", nullable = false)
-    private int order_status;
+    private int orderStatus;
 
     @Column(name = "total_price", nullable = false)
     private double totalPrice;
+
+    @Column(name = "order_date", nullable = false)
+    private Timestamp orderDate;
 
     public String getOrderId() {
         return orderId;
@@ -48,13 +70,7 @@ public class ProductOrder {
         this.paymentStatus = paymentStatus;
     }
 
-    public int getOrder_status() {
-        return order_status;
-    }
 
-    public void setOrder_status(int order_status) {
-        this.order_status = order_status;
-    }
 
     public double getTotalPrice() {
         return totalPrice;

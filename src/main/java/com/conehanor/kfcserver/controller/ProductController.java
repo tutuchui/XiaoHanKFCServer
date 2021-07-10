@@ -14,7 +14,7 @@ import java.io.File;
 import java.util.List;
 
 @RestController
-public class HelloController {
+public class ProductController {
     @Autowired
     ProductRepository productRepository;
 
