@@ -24,7 +24,6 @@ public class AdminController {
     @CrossOrigin
     public ResponseEntity<String> login(@RequestParam("number") String number, @RequestParam("password") String password) {
         try {
-            System.out.println("lalalalala");
             Admin admin = adminRepository.selectBynumber(number);
             if (admin.getPassword() == null) {
                 return ResponseEntity.status(501).body("Customer Not Exists");

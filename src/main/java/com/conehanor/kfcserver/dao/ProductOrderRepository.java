@@ -20,4 +20,9 @@ public interface ProductOrderRepository extends JpaRepository<ProductOrder, Stri
     @Transactional
     @Query(value = "update product_order set payment_status =:payment_status where order_id =:order_id ", nativeQuery = true)
     public int updatePaymentStatus(@Param("payment_status") int paymentStatus, @Param("order_id") String orderId);
+
+    @Modifying
+    @Transactional
+    @Query(value = "update product_order set payment_status =:payment_status, order_status =:order_status where order_id =:order_id ", nativeQuery = true)
+    public int updatePaymentOrderStatus(@Param("payment_status") int paymentStatus, @Param("order_status")int orderStatus, @Param("order_id") String orderId);
 }

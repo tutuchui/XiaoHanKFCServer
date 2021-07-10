@@ -1,12 +1,15 @@
 package com.conehanor.kfcserver.controller;
 
 import com.conehanor.kfcserver.constant.OrderConstant;
+import com.conehanor.kfcserver.dao.OrderStatusRepository;
 import com.conehanor.kfcserver.dao.ProductOrderDetailRepository;
 import com.conehanor.kfcserver.dao.ProductOrderRepository;
+import com.conehanor.kfcserver.entity.OrderStatus;
 import com.conehanor.kfcserver.entity.ProductOrder;
 import com.conehanor.kfcserver.entity.ProductOrderDetail;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import org.aspectj.weaver.ast.Or;
 import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -24,6 +27,9 @@ public class OrderController {
 
     @Autowired
     ProductOrderRepository productOrderRepository;
+
+    @Autowired
+    OrderStatusRepository orderStatusRepository;
 
     @PostMapping("/submitOrder")
     @CrossOrigin
@@ -50,6 +56,14 @@ public class OrderController {
         productOrder.setOrderDate(new Timestamp(System.currentTimeMillis()));
         productOrderRepository.saveAndFlush(productOrder);
 
+        OrderStatus orderStatus = new OrderStatus();
+        orderStatus.setOrderId(orderId);
+        orderStatus.setCustomerId(productDetailOrders.get(0).getCustomerId());
+        orderStatus.setPaymentStatus(OrderConstant.UNPAID);
+        orderStatus.setOrderStatus(OrderConstant.NOT_PREPARED);
+        orderStatus.setCustomerName(productDetailOrders.get(0).getCustomerName());
+        orderStatus.setUpdateTime(new Timestamp(System.currentTimeMillis()));
+        orderStatusRepository.saveAndFlush(orderStatus);
 
         for(ProductOrderDetail productOrderDetail : productDetailOrders){
             productOrderDetail.setOrderId(orderId);
@@ -80,4 +94,45 @@ public class OrderController {
         System.out.println(result);
         return "Success";
     }
+
+    @GetMapping("/getAllOrders")
+    @CrossOrigin
+
+    public String getAllOrders(){
+        List<ProductOrder> productOrderList = productOrderRepository.findAll();
+        return new Gson().toJson(productOrderList);
+    }
+
+    @GetMapping("/getOrderStatusDetail")
+    @CrossOrigin
+    public String getOrderStatus(@RequestParam("orderId") String orderId){
+        ProductOrder order = productOrderRepository.findById(orderId).get();
+        return new Gson().toJson(order);
+    }
+
+    @GetMapping("/getHistoryOrderStatus")
+    @CrossOrigin
+    public String getHistoryOrderStatus(@RequestParam("orderId") String orderId){
+        List<OrderStatus> orderStatusList = orderStatusRepository.selectOrderStatusById(orderId);
+        return new Gson().toJson(orderStatusList);
+    }
+
+    @PostMapping("/updateOrderStatus")
+    @CrossOrigin
+    public String updateOrderStatus(@RequestParam("paymentStatus")int paymentStatus, @RequestParam("orderStatus") int orderStatus, @RequestParam("orderId")String orderId,
+                                    @RequestParam("customerId")String customerId, @RequestParam("customerName")String customerName)
+    {
+        OrderStatus orderStatusRecord = new OrderStatus();
+        orderStatusRecord.setOrderId(orderId);
+        orderStatusRecord.setCustomerId(customerId);
+        orderStatusRecord.setCustomerName(customerName);
+        orderStatusRecord.setOrderStatus(orderStatus);
+        orderStatusRecord.setPaymentStatus(paymentStatus);
+        orderStatusRecord.setUpdateTime(new Timestamp(System.currentTimeMillis()));
+        orderStatusRepository.saveAndFlush(orderStatusRecord);
+        productOrderRepository.updatePaymentOrderStatus(paymentStatus, orderStatus, orderId);
+        return "Success";
+    }
+
+
 }

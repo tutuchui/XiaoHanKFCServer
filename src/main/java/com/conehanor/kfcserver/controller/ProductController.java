@@ -1,6 +1,7 @@
 package com.conehanor.kfcserver.controller;
 
 import com.conehanor.kfcserver.dao.ProductRepository;
+import com.conehanor.kfcserver.entity.OrderStatus;
 import com.conehanor.kfcserver.entity.Product;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,6 +55,8 @@ public class ProductController {
         product.setCategory(productCategory);
         product.setImageUrl("images/food" + File.separator + fileName);
         productRepository.saveAndFlush(product);
+
+
         return ResponseEntity.status(200).body("Success");
     }
 
