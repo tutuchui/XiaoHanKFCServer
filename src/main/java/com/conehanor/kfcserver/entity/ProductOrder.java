@@ -18,6 +18,9 @@ public class ProductOrder implements Serializable {
     @Column(name = "customer_id", nullable = false)
     private String customerId;
 
+    @Column(name = "customer_name", nullable = false)
+    private String customerName;
+
     @Column(name = "payment_status", nullable = false)
     private int paymentStatus;
 
@@ -78,5 +81,13 @@ public class ProductOrder implements Serializable {
 
     public void setTotalPrice(double totalPrice) {
         this.totalPrice = totalPrice;
+    }
+
+    public String getCustomerName() {
+        return customerName;
+    }
+
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
     }
 }

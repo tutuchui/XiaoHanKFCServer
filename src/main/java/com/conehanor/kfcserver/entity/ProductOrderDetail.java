@@ -18,6 +18,9 @@ public class ProductOrderDetail {
     @Id
     private String customerId;
 
+    @Column(name = "customer_name", nullable = false)
+    private String customerName;
+
     @Column(name = "product_name", nullable = false)
     private String productName;
 
@@ -74,5 +77,13 @@ public class ProductOrderDetail {
 
     public void setProductName(String productName) {
         this.productName = productName;
+    }
+
+    public String getCustomerName() {
+        return customerName;
+    }
+
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
     }
 }

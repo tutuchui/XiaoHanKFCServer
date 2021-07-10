@@ -38,11 +38,12 @@ public class OrderController {
         for(ProductOrderDetail productOrderDetail : productDetailOrders){
             totalPrice += productOrderDetail.getPrice();
         }
-
+        System.out.println(productDetailOrders.get(0).getCustomerName());
         ProductOrder productOrder = new ProductOrder();
         productOrder.setOrderId(orderId);
         productOrder.setCustomerId(productDetailOrders.get(0).getCustomerId());
         productOrder.setTotalPrice(totalPrice);
+        productOrder.setCustomerName(productDetailOrders.get(0).getCustomerName());
         productOrder.setPaymentStatus(OrderConstant.UNPAID);
         productOrder.setOrderStatus(OrderConstant.NOT_PREPARED);
         productOrder.setOrderDate(new Timestamp(System.currentTimeMillis()));

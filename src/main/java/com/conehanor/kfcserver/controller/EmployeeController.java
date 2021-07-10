@@ -48,4 +48,11 @@ public class EmployeeController {
         }
 
     }
+
+    @PostMapping("/fireEmployee")
+    @CrossOrigin
+    public ResponseEntity<String> fireEmployee(@RequestParam("number") String number) {
+        employeeRepository.deleteByNumber(number);
+        return ResponseEntity.status(200).body("Success");
+    }
 }

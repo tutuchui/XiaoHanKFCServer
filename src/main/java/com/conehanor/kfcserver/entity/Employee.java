@@ -28,7 +28,7 @@ public class Employee {
     private String email;
 
     @Column(name = "state", nullable = false)
-    private String state;
+    private int state;
 
     public int getId() {
         return id;
@@ -79,11 +79,11 @@ public class Employee {
     }
 
 
-    public String getState() {
+    public int getState() {
         return state;
     }
 
-    public void setState(String state) {
+    public void setState(int state) {
         this.state = state;
     }
 }
