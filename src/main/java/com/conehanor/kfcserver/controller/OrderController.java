@@ -7,6 +7,7 @@ import com.conehanor.kfcserver.entity.ProductOrder;
 import com.conehanor.kfcserver.entity.ProductOrderDetail;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -69,5 +70,14 @@ public class OrderController {
         String orderIdStr = String.format("%06d",orderId);
         List<ProductOrderDetail> productOrderDetailList = productOrderDetailRepository.selectProductOrderByOrderId(orderIdStr);
         return new Gson().toJson(productOrderDetailList);
+    }
+
+    @PostMapping("/updatePaymentStatus")
+    @CrossOrigin
+    public String updatePaymentStatus(@RequestParam("orderId") int orderId){
+        String orderIdStr = String.format("%06d",orderId);
+        int result = productOrderRepository.updatePaymentStatus(OrderConstant.PAID, orderIdStr);
+        System.out.println(result);
+        return "Success";
     }
 }
