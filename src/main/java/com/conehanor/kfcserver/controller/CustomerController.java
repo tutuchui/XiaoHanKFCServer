@@ -27,7 +27,9 @@ public class CustomerController {
                                            @RequestParam("phone") String phone,
                                            @RequestParam("password") String password,
                                            @RequestParam("email") String email,
-                                           @RequestParam("address") String address) {
+                                           @RequestParam("address") String address,
+                                           @RequestParam("gender") String gender)
+    {
         try {
             String encrytedPassword = customEncryptor.SHA256(password);
             Customer customer = new Customer();
@@ -36,6 +38,7 @@ public class CustomerController {
             customer.setAddress(address);
             customer.setEmail(email);
             customer.setPhone(phone);
+            customer.setGender(Integer.valueOf(gender));
             customerRepository.saveAndFlush(customer);
             return ResponseEntity.status(200).body("Success");
         } catch (Exception e) {
@@ -46,7 +49,7 @@ public class CustomerController {
 
     @PostMapping("/customer_login")
     @CrossOrigin
-    public ResponseEntity<String> login(@RequestParam("number") String phone, @RequestParam("password") String password) {
+    public ResponseEntity<String> login(@RequestParam("phone") String phone, @RequestParam("password") String password) {
         try {
             System.out.println("lalalalala");
             Optional<Customer> optionalCustomer = customerRepository.findById(phone);
@@ -56,7 +59,7 @@ public class CustomerController {
             String correctPassword = optionalCustomer.get().getPassword();
             String givenPassword = customEncryptor.SHA256(password);
             if (correctPassword.equals(givenPassword)) {
-                return ResponseEntity.status(200).body("Success");
+                return ResponseEntity.status(200).body(optionalCustomer.get().getName());
             } else {
                 return ResponseEntity.status(502).body("Incorrect Password");
             }

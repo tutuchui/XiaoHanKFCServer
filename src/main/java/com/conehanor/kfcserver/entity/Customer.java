@@ -15,8 +15,11 @@ public class Customer {
   private String password;
   @Column(name = "email", nullable = false)
   private String email;
-  @Column(name = "address", nullable = false)
+  @Column(name = "address")
   private String address;
+
+  @Column(name = "gender", nullable = false)
+  private int gender;
 
   public String getName() {
     return name;
@@ -59,4 +62,11 @@ public class Customer {
     this.address = address;
   }
 
+  public int getGender() {
+    return gender;
+  }
+
+  public void setGender(int gender) {
+    this.gender = gender;
+  }
 }
