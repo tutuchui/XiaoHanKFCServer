@@ -17,8 +17,6 @@ public class Employee {
     @Column(name = "number", nullable =  false)
     private String number;
 
-    @Column(name = "image_url", nullable = false)
-    private String imageUrl;
 
     @Column(name = "type", nullable = false)
     private String type;
@@ -28,9 +26,6 @@ public class Employee {
 
     @Column(name = "email", nullable =  false)
     private String email;
-
-    @Column(name =  "introduction", nullable = false)
-    private String introduction;
 
     @Column(name = "state", nullable = false)
     private String state;
@@ -59,14 +54,6 @@ public class Employee {
         this.number = number;
     }
 
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
-    }
-
     public String getType() {
         return type;
     }
@@ -91,13 +78,6 @@ public class Employee {
         this.email = email;
     }
 
-    public String getIntroduction() {
-        return introduction;
-    }
-
-    public void setIntroduction(String introduction) {
-        this.introduction = introduction;
-    }
 
     public String getState() {
         return state;
