@@ -15,13 +15,15 @@ public class SuggestionController {
     @PostMapping("/suggest")
     @CrossOrigin
     public ResponseEntity<String> suggest(@RequestParam("content") String content,
-                                          @RequestParam("customerId") String customerId)
+                                          @RequestParam("customerId") String customerId,
+                                          @RequestParam("customerName") String customerName)
     {
         try {
             java.sql.Timestamp d = new java.sql.Timestamp(System.currentTimeMillis());
             Suggestion suggestion = new Suggestion();
             suggestion.setContent(content);
             suggestion.setCustomerId(customerId);
+            suggestion.setCustomerName(customerName);
             suggestion.setSuggestionTime(d);
             suggestionRepository.saveAndFlush(suggestion);
             return ResponseEntity.status(200).body("Success");
