@@ -30,6 +30,7 @@ public class OrderController {
     public String submitOrder(@RequestBody String requestBody){
 
         int count = productOrderRepository.getOrderCount();
+        System.out.println(requestBody);
         String orderId = String.format("%06d", count + 1);
         double totalPrice = 0;
         Type listType = new TypeToken<List<ProductOrderDetail>>() {}.getType();

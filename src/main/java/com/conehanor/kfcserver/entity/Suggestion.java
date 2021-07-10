@@ -21,6 +21,9 @@ public class Suggestion {
   @Column(name = "content", nullable = false)
   private String content;
 
+  @Column(name = "customer_name", nullable = false)
+  private String customerName;
+
 
   public long getSuggestionId() {
     return suggestionId;
@@ -38,6 +41,15 @@ public class Suggestion {
   public void setCustomerId(String customerId) {
     this.customerId = customerId;
   }
+
+  public void setCustomerName(String customerName) {
+    this.customerName = customerName;
+  }
+
+  public String getCustomerName() {
+    return customerName;
+  }
+
 
 
   public java.sql.Timestamp getSuggestionTime() {
