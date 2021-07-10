@@ -31,7 +31,7 @@ public class OrderController {
 
         int count = productOrderRepository.getOrderCount();
         System.out.println(requestBody);
-        String orderId = String.format("%06d", count + 1);
+        String orderId = "ORDER" + String.format("%06d", count + 1);
         double totalPrice = 0;
         Type listType = new TypeToken<List<ProductOrderDetail>>() {}.getType();
         List<ProductOrderDetail> productDetailOrders= new Gson().fromJson(requestBody, listType);
@@ -68,17 +68,15 @@ public class OrderController {
 
     @GetMapping("/getOrderDetailById")
     @CrossOrigin
-    public String getOrderDetailById(@RequestParam("orderId") int orderId){
-        String orderIdStr = String.format("%06d",orderId);
-        List<ProductOrderDetail> productOrderDetailList = productOrderDetailRepository.selectProductOrderByOrderId(orderIdStr);
+    public String getOrderDetailById(@RequestParam("orderId") String orderId){
+        List<ProductOrderDetail> productOrderDetailList = productOrderDetailRepository.selectProductOrderByOrderId(orderId);
         return new Gson().toJson(productOrderDetailList);
     }
 
     @PostMapping("/updatePaymentStatus")
     @CrossOrigin
-    public String updatePaymentStatus(@RequestParam("orderId") int orderId){
-        String orderIdStr = String.format("%06d",orderId);
-        int result = productOrderRepository.updatePaymentStatus(OrderConstant.PAID, orderIdStr);
+    public String updatePaymentStatus(@RequestParam("orderId") String orderId){
+        int result = productOrderRepository.updatePaymentStatus(OrderConstant.PAID, orderId);
         System.out.println(result);
         return "Success";
     }
