@@ -2,9 +2,12 @@ package com.conehanor.kfcserver.controller;
 
 import com.conehanor.kfcserver.dao.*;
 import com.conehanor.kfcserver.entity.Suggestion;
+import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 public class SuggestionController {
@@ -30,6 +33,14 @@ public class SuggestionController {
         } catch (Exception e) {
             return ResponseEntity.status(500).body("error");
         }
+
+    }
+
+    @GetMapping("/getAllSuggestion")
+    @CrossOrigin
+    public String getAllSuggestion(){
+        List<Suggestion> suggestions = suggestionRepository.findAll();
+        return new Gson().toJson(suggestions);
 
     }
 
