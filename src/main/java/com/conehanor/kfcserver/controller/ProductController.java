@@ -32,21 +32,22 @@ public class ProductController {
 
     @PostMapping("/uploadProduct")
     @CrossOrigin
-    public ResponseEntity<String> saveProduct(@RequestParam("imageFile")MultipartFile file,
+    public ResponseEntity<String> saveProduct(@RequestParam(value = "imageFile", required = false)MultipartFile file,
                                       @RequestParam("productName")String productName,
                                       @RequestParam("productPrice") double productPrice,
-                                      @RequestParam("productIntroduction") String productIntroduction,
-                                      @RequestParam("productCategory") String productCategory){
+                                      @RequestParam("productIntroduction") String productIntroduction, @RequestParam("productCategory") String productCategory){
+        String fileName = "null";
+        if(file != null){
+            fileName = file.getOriginalFilename();
+            String imageUrl = imagePath + File.separator + fileName;
+            System.out.println(imageUrl);
+            try{
 
-        String fileName = file.getOriginalFilename();
-        String imageUrl = imagePath + File.separator + fileName;
-        System.out.println(imageUrl);
-        try{
-
-            file.transferTo(new File(imageUrl));
-        }catch (Exception e){
-            e.printStackTrace();
-            return ResponseEntity.status(500).body("Error");
+                file.transferTo(new File(imageUrl));
+            }catch (Exception e){
+                e.printStackTrace();
+                return ResponseEntity.status(500).body("Error");
+            }
         }
         Product product = new Product();
         product.setName(productName);
@@ -67,10 +68,38 @@ public class ProductController {
         return new Gson().toJson(productList);
     }
 
-    @GetMapping("/getProductByCategory")
-    public String getProductByCategory(@RequestParam("category")String productCategory) {
-        System.out.println(productCategory);
-        List<Product> productList = productRepository.selectByCategory(productCategory);
-        return new Gson().toJson(productList);
+
+    @PostMapping("/updateProduct")
+    @CrossOrigin
+    public ResponseEntity<String> updateProduct(@RequestParam(value = "imageFile", required = false)MultipartFile file,
+                                                @RequestParam("productName")String productName,
+                                                @RequestParam("productPrice") double productPrice,
+                                                @RequestParam("productIntroduction") String productIntroduction,
+                                                @RequestParam("productCategory") String productCategory,
+                                                @RequestParam("productId") String  productId)
+    {
+        int result = -1;
+        if(file != null) {
+            String fileName = file.getOriginalFilename();
+            String imageUrl = imagePath + File.separator + fileName;
+            System.out.println(imageUrl);
+            try {
+                file.transferTo(new File(imageUrl));
+            } catch (Exception e) {
+                e.printStackTrace();
+                return ResponseEntity.status(500).body("Error");
+            }
+             result = productRepository.updateProductById(productName, imageUrl, productCategory, productPrice, productIntroduction, productId);
+        }else{
+            System.out.println(productIntroduction);
+            System.out.println(productId);
+            result = productRepository.updateProductWithoutImageById(productName, productCategory, productPrice, productIntroduction, productId);
+        }
+
+
+        if(result >= 0){
+            return ResponseEntity.status(200).body("Success");
+        }
+        return ResponseEntity.status(501).body("Error");
     }
 }
