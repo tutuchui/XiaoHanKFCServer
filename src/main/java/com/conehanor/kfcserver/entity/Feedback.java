@@ -57,7 +57,7 @@ public class Feedback {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Feedback feedback = (Feedback) o;
-        return suggestionId == feedback.suggestionId && Objects.equals(adminId, feedback.adminId) && Objects.equals(feedbackTime, feedback.feedbackTime) && Objects.equals(content, feedback.content);
+        return suggestionId == feedback.suggestionId && adminId == feedback.adminId && Objects.equals(feedbackTime, feedback.feedbackTime) && Objects.equals(content, feedback.content);
     }
 
     @Override

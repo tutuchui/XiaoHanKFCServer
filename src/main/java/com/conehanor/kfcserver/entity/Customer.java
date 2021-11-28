@@ -9,7 +9,7 @@ import java.util.Objects;
 @Entity
 public class Customer {
     private int customerId;
-    private int phone;
+    private String phone;
     private String password;
     private String name;
     private String email;
@@ -28,11 +28,11 @@ public class Customer {
 
     @Basic
     @Column(name = "phone")
-    public int getPhone() {
+    public String getPhone() {
         return phone;
     }
 
-    public void setPhone(int phone) {
+    public void setPhone(String phone) {
         this.phone = phone;
     }
 
@@ -91,7 +91,7 @@ public class Customer {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Customer customer = (Customer) o;
-        return phone == customer.phone && gender == customer.gender && Objects.equals(customerId, customer.customerId) && Objects.equals(password, customer.password) && Objects.equals(name, customer.name) && Objects.equals(email, customer.email) && Objects.equals(address, customer.address);
+        return customerId == customer.customerId && gender == customer.gender && Objects.equals(phone, customer.phone) && Objects.equals(password, customer.password) && Objects.equals(name, customer.name) && Objects.equals(email, customer.email) && Objects.equals(address, customer.address);
     }
 
     @Override

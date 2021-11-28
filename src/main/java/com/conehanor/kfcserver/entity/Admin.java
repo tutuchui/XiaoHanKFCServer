@@ -58,7 +58,7 @@ public class Admin {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Admin admin = (Admin) o;
-        return Objects.equals(adminId, admin.adminId) && Objects.equals(number, admin.number) && Objects.equals(name, admin.name) && Objects.equals(password, admin.password);
+        return adminId == admin.adminId && Objects.equals(number, admin.number) && Objects.equals(name, admin.name) && Objects.equals(password, admin.password);
     }
 
     @Override

@@ -10,7 +10,7 @@ import java.util.Objects;
 public class Product {
     private int productId;
     private String name;
-    private int price;
+    private double price;
     private String imageUrl;
     private String category;
     private String introduction;
@@ -38,11 +38,11 @@ public class Product {
 
     @Basic
     @Column(name = "price")
-    public int getPrice() {
+    public double getPrice() {
         return price;
     }
 
-    public void setPrice(int price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 
@@ -97,5 +97,18 @@ public class Product {
     @Override
     public int hashCode() {
         return Objects.hash(productId, name, price, imageUrl, category, introduction, state);
+    }
+
+    @Override
+    public String toString() {
+        return "Product{" +
+                "productId=" + productId +
+                ", name='" + name + '\'' +
+                ", price=" + price +
+                ", imageUrl='" + imageUrl + '\'' +
+                ", category='" + category + '\'' +
+                ", introduction='" + introduction + '\'' +
+                ", state=" + state +
+                '}';
     }
 }

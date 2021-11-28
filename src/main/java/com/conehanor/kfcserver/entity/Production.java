@@ -48,7 +48,7 @@ public class Production {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Production that = (Production) o;
-        return productionId == that.productionId && Objects.equals(number, that.number) && Objects.equals(productionTime, that.productionTime);
+        return productionId == that.productionId && number == that.number && Objects.equals(productionTime, that.productionTime);
     }
 
     @Override

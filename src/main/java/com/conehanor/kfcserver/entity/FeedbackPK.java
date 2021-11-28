@@ -34,7 +34,7 @@ public class FeedbackPK implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         FeedbackPK that = (FeedbackPK) o;
-        return suggestionId == that.suggestionId && Objects.equals(adminId, that.adminId);
+        return suggestionId == that.suggestionId && adminId == that.adminId;
     }
 
     @Override

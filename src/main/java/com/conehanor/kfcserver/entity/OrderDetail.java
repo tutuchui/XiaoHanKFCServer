@@ -9,7 +9,7 @@ import java.util.Objects;
 public class OrderDetail {
     private int productOrderId;
     private int productId;
-    private Object number;
+    private int number;
 
     @Id
     @Column(name = "product_order_id")
@@ -33,11 +33,11 @@ public class OrderDetail {
 
     @Basic
     @Column(name = "number")
-    public Object getNumber() {
+    public int getNumber() {
         return number;
     }
 
-    public void setNumber(Object number) {
+    public void setNumber(int number) {
         this.number = number;
     }
 
@@ -46,7 +46,7 @@ public class OrderDetail {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         OrderDetail that = (OrderDetail) o;
-        return productOrderId == that.productOrderId && productId == that.productId && Objects.equals(number, that.number);
+        return productOrderId == that.productOrderId && productId == that.productId && number == that.number;
     }
 
     @Override

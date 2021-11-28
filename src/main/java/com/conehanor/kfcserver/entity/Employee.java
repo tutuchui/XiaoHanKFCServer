@@ -113,7 +113,7 @@ public class Employee {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Employee employee = (Employee) o;
-        return type == employee.type && state == employee.state && Objects.equals(employeeId, employee.employeeId) && Objects.equals(number, employee.number) && Objects.equals(phone, employee.phone) && Objects.equals(name, employee.name) && Objects.equals(password, employee.password) && Objects.equals(email, employee.email) && Objects.equals(gender, employee.gender);
+        return employeeId == employee.employeeId && type == employee.type && state == employee.state && Objects.equals(number, employee.number) && Objects.equals(phone, employee.phone) && Objects.equals(name, employee.name) && Objects.equals(password, employee.password) && Objects.equals(email, employee.email) && Objects.equals(gender, employee.gender);
     }
 
     @Override

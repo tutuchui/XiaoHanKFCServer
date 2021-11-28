@@ -46,7 +46,7 @@ public class PurchaseIngredients {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         PurchaseIngredients that = (PurchaseIngredients) o;
-        return purchaseIngredientsId == that.purchaseIngredientsId && Objects.equals(number, that.number) && Objects.equals(purchaseTime, that.purchaseTime);
+        return purchaseIngredientsId == that.purchaseIngredientsId && number == that.number && Objects.equals(purchaseTime, that.purchaseTime);
     }
 
     @Override
