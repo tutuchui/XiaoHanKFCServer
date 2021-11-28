@@ -1,72 +1,58 @@
 package com.conehanor.kfcserver.entity;
 
-
-import javax.persistence.*;
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import java.sql.Timestamp;
+import java.util.Objects;
 
 @Entity
-@Table(name = "suggestion")
 public class Suggestion {
+    private int suggestionId;
+    private String content;
+    private Timestamp suggestTime;
 
-  @Column(name = "suggestion_id", nullable = false)
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Id
-  private long suggestionId;
+    @Id
+    @Column(name = "suggestion_id")
+    public int getSuggestionId() {
+        return suggestionId;
+    }
 
-  @Column(name = "customer_id", nullable = false)
-  private String customerId;
+    public void setSuggestionId(int suggestionId) {
+        this.suggestionId = suggestionId;
+    }
 
-  @Column(name = "suggestion_time", nullable = false)
-  private java.sql.Timestamp suggestionTime;
+    @Basic
+    @Column(name = "content")
+    public String getContent() {
+        return content;
+    }
 
-  @Column(name = "content", nullable = false)
-  private String content;
+    public void setContent(String content) {
+        this.content = content;
+    }
 
-  @Column(name = "customer_name", nullable = false)
-  private String customerName;
+    @Basic
+    @Column(name = "suggest_time")
+    public Timestamp getSuggestTime() {
+        return suggestTime;
+    }
 
+    public void setSuggestTime(Timestamp suggestTime) {
+        this.suggestTime = suggestTime;
+    }
 
-  public long getSuggestionId() {
-    return suggestionId;
-  }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Suggestion that = (Suggestion) o;
+        return suggestionId == that.suggestionId && Objects.equals(content, that.content) && Objects.equals(suggestTime, that.suggestTime);
+    }
 
-  public void setSuggestionId(long suggestionId) {
-    this.suggestionId = suggestionId;
-  }
-
-
-  public String getCustomerId() {
-    return customerId;
-  }
-
-  public void setCustomerId(String customerId) {
-    this.customerId = customerId;
-  }
-
-  public void setCustomerName(String customerName) {
-    this.customerName = customerName;
-  }
-
-  public String getCustomerName() {
-    return customerName;
-  }
-
-
-
-  public java.sql.Timestamp getSuggestionTime() {
-    return suggestionTime;
-  }
-
-  public void setSuggestionTime(java.sql.Timestamp suggestionTime) {
-    this.suggestionTime = suggestionTime;
-  }
-
-
-  public String getContent() {
-    return content;
-  }
-
-  public void setContent(String content) {
-    this.content = content;
-  }
-
+    @Override
+    public int hashCode() {
+        return Objects.hash(suggestionId, content, suggestTime);
+    }
 }

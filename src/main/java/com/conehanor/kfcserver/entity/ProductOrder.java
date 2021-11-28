@@ -1,37 +1,38 @@
 package com.conehanor.kfcserver.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import java.io.Serializable;
-import java.sql.Date;
+import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.Objects;
 
 @Entity
-@Table(name = "product_order")
-public class ProductOrder implements Serializable {
-    @Column(name = "order_id", nullable = false)
+@Table(name = "product_order", schema = "han_fc", catalog = "")
+public class ProductOrder {
+    private int productOrderId;
+    private int price;
+    private Timestamp orderDate;
+
     @Id
-    private String orderId;
-
-    @Column(name = "customer_id", nullable = false)
-    private String customerId;
-
-    @Column(name = "customer_name", nullable = false)
-    private String customerName;
-
-    @Column(name = "payment_status", nullable = false)
-    private int paymentStatus;
-
-    public int getOrderStatus() {
-        return orderStatus;
+    @Column(name = "product_order_id")
+    public int getProductOrderId() {
+        return productOrderId;
     }
 
-    public void setOrderStatus(int orderStatus) {
-        this.orderStatus = orderStatus;
+    public void setProductOrderId(int productOrderId) {
+        this.productOrderId = productOrderId;
     }
 
+    @Basic
+    @Column(name = "price")
+    public int getPrice() {
+        return price;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
+    }
+
+    @Basic
+    @Column(name = "order_date")
     public Timestamp getOrderDate() {
         return orderDate;
     }
@@ -40,54 +41,16 @@ public class ProductOrder implements Serializable {
         this.orderDate = orderDate;
     }
 
-    @Column(name = "order_status", nullable = false)
-    private int orderStatus;
-
-    @Column(name = "total_price", nullable = false)
-    private double totalPrice;
-
-    @Column(name = "order_date", nullable = false)
-    private Timestamp orderDate;
-
-    public String getOrderId() {
-        return orderId;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ProductOrder that = (ProductOrder) o;
+        return productOrderId == that.productOrderId && price == that.price && Objects.equals(orderDate, that.orderDate);
     }
 
-    public void setOrderId(String orderId) {
-        this.orderId = orderId;
-    }
-
-    public String getCustomerId() {
-        return customerId;
-    }
-
-    public void setCustomerId(String customerId) {
-        this.customerId = customerId;
-    }
-
-    public int getPaymentStatus() {
-        return paymentStatus;
-    }
-
-    public void setPaymentStatus(int paymentStatus) {
-        this.paymentStatus = paymentStatus;
-    }
-
-
-
-    public double getTotalPrice() {
-        return totalPrice;
-    }
-
-    public void setTotalPrice(double totalPrice) {
-        this.totalPrice = totalPrice;
-    }
-
-    public String getCustomerName() {
-        return customerName;
-    }
-
-    public void setCustomerName(String customerName) {
-        this.customerName = customerName;
+    @Override
+    public int hashCode() {
+        return Objects.hash(productOrderId, price, orderDate);
     }
 }

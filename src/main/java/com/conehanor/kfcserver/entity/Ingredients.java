@@ -7,23 +7,22 @@ import javax.persistence.Id;
 import java.util.Objects;
 
 @Entity
-public class Product {
-    private int productId;
+public class Ingredients {
+    private int ingredientsId;
     private String name;
     private int price;
-    private String imageUrl;
+    private String merchant;
     private String category;
     private String introduction;
-    private int state;
 
     @Id
-    @Column(name = "product_id")
-    public int getProductId() {
-        return productId;
+    @Column(name = "ingredients_id")
+    public int getIngredientsId() {
+        return ingredientsId;
     }
 
-    public void setProductId(int productId) {
-        this.productId = productId;
+    public void setIngredientsId(int ingredientsId) {
+        this.ingredientsId = ingredientsId;
     }
 
     @Basic
@@ -47,13 +46,13 @@ public class Product {
     }
 
     @Basic
-    @Column(name = "image_url")
-    public String getImageUrl() {
-        return imageUrl;
+    @Column(name = "merchant")
+    public String getMerchant() {
+        return merchant;
     }
 
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
+    public void setMerchant(String merchant) {
+        this.merchant = merchant;
     }
 
     @Basic
@@ -76,26 +75,16 @@ public class Product {
         this.introduction = introduction;
     }
 
-    @Basic
-    @Column(name = "state")
-    public int getState() {
-        return state;
-    }
-
-    public void setState(int state) {
-        this.state = state;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Product product = (Product) o;
-        return productId == product.productId && price == product.price && state == product.state && Objects.equals(name, product.name) && Objects.equals(imageUrl, product.imageUrl) && Objects.equals(category, product.category) && Objects.equals(introduction, product.introduction);
+        Ingredients that = (Ingredients) o;
+        return ingredientsId == that.ingredientsId && price == that.price && Objects.equals(name, that.name) && Objects.equals(merchant, that.merchant) && Objects.equals(category, that.category) && Objects.equals(introduction, that.introduction);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(productId, name, price, imageUrl, category, introduction, state);
+        return Objects.hash(ingredientsId, name, price, merchant, category, introduction);
     }
 }

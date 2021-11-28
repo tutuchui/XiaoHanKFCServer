@@ -1,51 +1,35 @@
 package com.conehanor.kfcserver.entity;
 
-import javax.persistence.*;
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import java.util.Objects;
 
 @Entity
-@Table(name = "employee")
 public class Employee {
-
-    @Column(name = "employee_id", nullable = false)
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Id
-    private int id;
-
-    @Column(name = "name", nullable = false)
-    private String name;
-
-    @Column(name = "number", nullable =  false)
+    private int employeeId;
     private String number;
-
-
-    @Column(name = "type", nullable = false)
-    private String type;
-
-    @Column(name = "phone", nullable =  false)
     private String phone;
-
-    @Column(name = "email", nullable =  false)
+    private String name;
+    private String password;
     private String email;
-
-    @Column(name = "state", nullable = false)
+    private Integer gender;
+    private int type;
     private int state;
 
-    public int getId() {
-        return id;
+    @Id
+    @Column(name = "employee_id")
+    public int getEmployeeId() {
+        return employeeId;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setEmployeeId(int employeeId) {
+        this.employeeId = employeeId;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
+    @Basic
+    @Column(name = "number")
     public String getNumber() {
         return number;
     }
@@ -54,14 +38,8 @@ public class Employee {
         this.number = number;
     }
 
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
+    @Basic
+    @Column(name = "phone")
     public String getPhone() {
         return phone;
     }
@@ -70,6 +48,28 @@ public class Employee {
         this.phone = phone;
     }
 
+    @Basic
+    @Column(name = "name")
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    @Basic
+    @Column(name = "password")
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    @Basic
+    @Column(name = "email")
     public String getEmail() {
         return email;
     }
@@ -78,12 +78,46 @@ public class Employee {
         this.email = email;
     }
 
+    @Basic
+    @Column(name = "gender")
+    public Integer getGender() {
+        return gender;
+    }
 
+    public void setGender(Integer gender) {
+        this.gender = gender;
+    }
+
+    @Basic
+    @Column(name = "type")
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
+    }
+
+    @Basic
+    @Column(name = "state")
     public int getState() {
         return state;
     }
 
     public void setState(int state) {
         this.state = state;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Employee employee = (Employee) o;
+        return type == employee.type && state == employee.state && Objects.equals(employeeId, employee.employeeId) && Objects.equals(number, employee.number) && Objects.equals(phone, employee.phone) && Objects.equals(name, employee.name) && Objects.equals(password, employee.password) && Objects.equals(email, employee.email) && Objects.equals(gender, employee.gender);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(employeeId, number, phone, name, password, email, gender, type, state);
     }
 }
