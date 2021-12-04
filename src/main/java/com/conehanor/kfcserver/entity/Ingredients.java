@@ -10,7 +10,7 @@ import java.util.Objects;
 public class Ingredients {
     private int ingredientsId;
     private String name;
-    private int price;
+    private double price;
     private String merchant;
     private String category;
     private String introduction;
@@ -37,11 +37,11 @@ public class Ingredients {
 
     @Basic
     @Column(name = "price")
-    public int getPrice() {
+    public double getPrice() {
         return price;
     }
 
-    public void setPrice(int price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 

@@ -1,21 +1,25 @@
 package com.conehanor.kfcserver.controller;
 
+import com.conehanor.kfcserver.dao.IngredientsListRepository;
+import com.conehanor.kfcserver.dao.IngredientsRepository;
 import com.conehanor.kfcserver.dao.ProductRepository;
+import com.conehanor.kfcserver.entity.Ingredients;
+import com.conehanor.kfcserver.entity.IngredientsList;
+import com.conehanor.kfcserver.entity.IngredientsListPK;
 import com.conehanor.kfcserver.entity.Product;
+import com.conehanor.kfcserver.model.IngredientForProduct;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.FileSystemUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
-import java.io.IOException;
-import java.nio.file.FileSystem;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -29,6 +33,12 @@ public class ProductController {
     @Autowired
     ProductRepository productRepository;
 
+    @Autowired
+    IngredientsRepository ingredientsRepository;
+
+    @Autowired
+    IngredientsListRepository ingredientsListRepository;
+
     @PostMapping("/upload")
     public ResponseEntity<String> upload(@RequestParam("body") String body, @RequestParam("file") MultipartFile file) {
         Product product = gson.fromJson(body, Product.class);
@@ -37,9 +47,16 @@ public class ProductController {
         String imageUrl = "";
         if (file != null) {
             try {
-                Files.copy(file.getInputStream(), root.resolve(file.getOriginalFilename()));
-                imageUrl = "images" + File.separator + file.getOriginalFilename();
+                String fileName = file.getOriginalFilename();
+                int index = 1;
+                while(Files.exists(Paths.get("images", fileName))){
+                    fileName = file.getOriginalFilename().split("\\.")[0] + index + "." + file.getOriginalFilename().split("\\.")[1];
+                    index++;
+                }
+                Files.copy(file.getInputStream(), root.resolve(fileName));
+                imageUrl = "images" + File.separator + fileName;
             } catch (Exception e) {
+                e.printStackTrace();
                 System.out.println("Could not store the file. Error: " + e.getMessage());
                 return new ResponseEntity<>(gson.toJson("ERROR"), HttpStatus.INTERNAL_SERVER_ERROR);
             }
@@ -56,21 +73,25 @@ public class ProductController {
 
     @PostMapping("/update")
     public ResponseEntity<String> update(@RequestParam("body") String body, @RequestParam(value = "file", required = false) MultipartFile file) {
-        System.out.println(body);
         Product product = gson.fromJson(body, Product.class);
-        System.out.println(product.toString());
         Path root = Paths.get("images");
         if (file != null) {
             try {
-                Files.copy(file.getInputStream(), root.resolve(file.getOriginalFilename()));
-                String imageUrl = "images" + File.separator + file.getOriginalFilename();
+                String fileName = file.getOriginalFilename();
+                int index = 1;
+                while(Files.exists(Paths.get("images", fileName))){
+                    fileName = file.getOriginalFilename().split("\\.")[0] + index + "." + file.getOriginalFilename().split("\\.")[1];
+                    index++;
+                }
+                Files.copy(file.getInputStream(), root.resolve(fileName));
+                String imageUrl = "images" + File.separator + fileName;
                 product.setImageUrl(imageUrl);
-
             } catch (Exception e) {
                 System.out.println("Could not store the file. Error: " + e.getMessage());
                 return new ResponseEntity<>(gson.toJson("ERROR"), HttpStatus.INTERNAL_SERVER_ERROR);
             }
         }
+
         productRepository.saveAndFlush(product);
         return new ResponseEntity<>(gson.toJson("SUCCESS"), HttpStatus.OK);
     }
@@ -88,5 +109,30 @@ public class ProductController {
         }
     }
 
+    @GetMapping("/getAllIngredients")
+    public ResponseEntity<String> getAllIngredients(){
+        List<Ingredients> ingredientsList = ingredientsRepository.findAll();
+        return new ResponseEntity<>(gson.toJson(ingredientsList), HttpStatus.OK);
+    }
+
+    @PostMapping("/addIngredientForProduct")
+    public ResponseEntity<String>addIngredientForProduct(@RequestBody String body){
+        IngredientsList ingredientsList = gson.fromJson(body, IngredientsList.class);
+        ingredientsListRepository.saveAndFlush(ingredientsList);
+        return new ResponseEntity<>("SUCCESS", HttpStatus.OK);
+    }
+
+    @GetMapping("/getIngredientsForProduct")
+    public ResponseEntity<String> getIngredientsForProduct(@RequestParam("productId") int productId){
+        List<IngredientForProduct> ingredientForProductList = ingredientsRepository.selectIngredientForProduct(productId);
+        return new ResponseEntity<>(gson.toJson(ingredientForProductList), HttpStatus.OK);
+    }
+
+    @PostMapping("/deleteIngredientForProduct")
+    public  ResponseEntity<String> deleteIngredientForProduct(@RequestBody String body){
+        IngredientsListPK ingredientsListPK = gson.fromJson(body, IngredientsListPK.class);
+        ingredientsListRepository.deleteById(ingredientsListPK);
+        return new ResponseEntity<>("SUCCESS", HttpStatus.OK);
+    }
 
 }
