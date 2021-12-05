@@ -57,7 +57,7 @@ public class EmployeeController {
         List<OrderForEmployee> orderForEmployeeList = new ArrayList<>();
         for(ProductOrder productOrder: productOrderList){
             Customer customer = customerRepository.findById(productOrder.getCustomerId()).get();
-            ManageOrder manageOrder = manageOrderRepository.findLatestStatusByProductOrderId(productOrder.getProductOrderId());
+            ManageOrder manageOrder = manageOrderRepository.findAllByOrderId(productOrder.getProductOrderId()).get(0);
             OrderForEmployee orderForEmployee = new OrderForEmployee();
             orderForEmployee.setOrderId(productOrder.getProductOrderId());
             orderForEmployee.setCustomerName(customer.getName());
