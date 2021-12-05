@@ -67,8 +67,13 @@ public class ProductController {
     }
 
     @GetMapping("/getAllValidProducts")
-    public ResponseEntity<String> getAllProducts() {
+    public ResponseEntity<String> getAllValidProducts() {
         return new ResponseEntity<>(gson.toJson(productRepository.findAllValidProducts()), HttpStatus.OK);
+    }
+
+    @GetMapping("/getAllProducts")
+    public ResponseEntity<String> getAllProducts() {
+        return new ResponseEntity<>(gson.toJson(productRepository.findAll()), HttpStatus.OK);
     }
 
     @PostMapping("/update")
