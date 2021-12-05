@@ -1,13 +1,20 @@
 package com.conehanor.kfcserver.controller;
 
+import com.conehanor.kfcserver.dao.CustomerRepository;
 import com.conehanor.kfcserver.dao.EmployeeRepository;
-import com.conehanor.kfcserver.entity.Admin;
-import com.conehanor.kfcserver.entity.Employee;
+import com.conehanor.kfcserver.dao.ManageOrderRepository;
+import com.conehanor.kfcserver.dao.ProductOrderRepository;
+import com.conehanor.kfcserver.entity.*;
+import com.conehanor.kfcserver.model.OrderDetailForEmployee;
+import com.conehanor.kfcserver.model.OrderForEmployee;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @CrossOrigin
@@ -18,6 +25,15 @@ public class EmployeeController {
 
     @Autowired
     EmployeeRepository employeeRepository;
+
+    @Autowired
+    ProductOrderRepository productOrderRepository;
+
+    @Autowired
+    CustomerRepository customerRepository;
+
+    @Autowired
+    ManageOrderRepository manageOrderRepository;
 
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody String body){
@@ -32,5 +48,46 @@ public class EmployeeController {
         }else {
             return new ResponseEntity<>(gson.toJson("ERROR"), HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    @GetMapping("/getAllOrders")
+    public ResponseEntity<String> getOrder(){
+        List<ProductOrder> productOrderList = productOrderRepository.findAll();
+        List<OrderForEmployee> orderForEmployeeList = new ArrayList<>();
+        for(ProductOrder productOrder: productOrderList){
+            Customer customer = customerRepository.findById(productOrder.getCustomerId()).get();
+            ManageOrder manageOrder = manageOrderRepository.findLatestStatusByProductOrderId(productOrder.getProductOrderId());
+            OrderForEmployee orderForEmployee = new OrderForEmployee();
+            orderForEmployee.setOrderId(productOrder.getProductOrderId());
+            orderForEmployee.setCustomerName(customer.getName());
+            orderForEmployee.setPhone(customer.getPhone());
+            orderForEmployee.setPaymentStatus(manageOrder.getPaymentStatus());
+            orderForEmployee.setOrderStatus(manageOrder.getOrderStatus());
+            orderForEmployeeList.add(orderForEmployee);
+        }
+        return new ResponseEntity<>(gson.toJson(orderForEmployeeList),HttpStatus.OK);
+    }
+
+    @GetMapping("/getOrderDetails")
+    public ResponseEntity<String> getOrderDetails(@RequestParam("orderId") int orderId){
+        ProductOrder productOrder = productOrderRepository.findById(orderId).get();
+        Customer customer = customerRepository.findById(productOrder.getCustomerId()).get();
+        List<ManageOrder> manageOrderList = manageOrderRepository.findAllByOrderId(orderId);
+        OrderDetailForEmployee orderDetailForEmployee = new OrderDetailForEmployee();
+        orderDetailForEmployee.setOrderId(orderId);
+        orderDetailForEmployee.setCustomerName(customer.getName());
+        orderDetailForEmployee.setOrderTime(productOrder.getOrderDate().toString());
+        orderDetailForEmployee.setOrderStatus(manageOrderList.get(0).getOrderStatus());
+        orderDetailForEmployee.setPaymentStatus(manageOrderList.get(0).getPaymentStatus());
+        orderDetailForEmployee.setHistoryOrderStatus(new ArrayList<>());
+        for(ManageOrder manageOrder : manageOrderList){
+            OrderDetailForEmployee.OrderStatus orderStatus = new OrderDetailForEmployee.OrderStatus();
+            orderStatus.setOrderStatus(manageOrder.getOrderStatus());
+            orderStatus.setTime(manageOrder.getManageTime().toString());
+            orderStatus.setPaymentStatus(manageOrder.getPaymentStatus());
+            orderDetailForEmployee.getHistoryOrderStatus().add(orderStatus);
+        }
+
+        return new ResponseEntity<>(gson.toJson(orderDetailForEmployee), HttpStatus.OK);
     }
 }

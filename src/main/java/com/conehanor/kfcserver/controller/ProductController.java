@@ -140,4 +140,24 @@ public class ProductController {
         return new ResponseEntity<>("SUCCESS", HttpStatus.OK);
     }
 
+    @GetMapping("/updateProductState")
+    public ResponseEntity<String> updateProductState(@RequestParam("productId") int productId, @RequestParam("state") int state){
+        try{
+            if(state == 0){
+                productRepository.updateProductState(1, productId);
+                return new ResponseEntity<>(gson.toJson(1), HttpStatus.OK);
+
+            }else{
+                productRepository.updateProductState(0, productId);
+                return new ResponseEntity<>(gson.toJson(0), HttpStatus.OK);
+
+            }
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            return new ResponseEntity<>("ERROR", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+    }
+
 }
