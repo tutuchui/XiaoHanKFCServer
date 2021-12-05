@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -90,4 +91,17 @@ public class EmployeeController {
 
         return new ResponseEntity<>(gson.toJson(orderDetailForEmployee), HttpStatus.OK);
     }
+
+    @PostMapping("/updateOrderStatus")
+    public ResponseEntity<String> updateOrderStatus(@RequestBody String body){
+        OrderDetailForEmployee orderDetailForEmployee = gson.fromJson(body, OrderDetailForEmployee.class);
+        ManageOrder manageOrder = new ManageOrder();
+        manageOrder.setProductOrderId(orderDetailForEmployee.getOrderId());
+        manageOrder.setPaymentStatus(orderDetailForEmployee.getPaymentStatus());
+        manageOrder.setOrderStatus(orderDetailForEmployee.getOrderStatus());
+        manageOrder.setManageTime(new Timestamp(System.currentTimeMillis()));
+        manageOrderRepository.saveAndFlush(manageOrder);
+        return new ResponseEntity<>(gson.toJson("SUCCESS"), HttpStatus.OK);
+    }
+
 }
