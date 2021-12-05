@@ -66,9 +66,9 @@ public class ProductController {
         return new ResponseEntity<>(gson.toJson("SUCCESS"), HttpStatus.OK);
     }
 
-    @GetMapping("getAllProducts")
+    @GetMapping("/getAllValidProducts")
     public ResponseEntity<String> getAllProducts() {
-        return new ResponseEntity<>(gson.toJson(productRepository.findAll()), HttpStatus.OK);
+        return new ResponseEntity<>(gson.toJson(productRepository.findAllValidProducts()), HttpStatus.OK);
     }
 
     @PostMapping("/update")

@@ -1,5 +1,7 @@
 package com.conehanor.kfcserver.entity;
 
+import com.google.gson.annotations.Expose;
+
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -8,9 +10,11 @@ import java.util.Objects;
 
 @Entity
 public class Customer {
+    @Expose
     private int customerId;
     private String phone;
     private String password;
+    @Expose
     private String name;
     private String email;
     private int gender;
@@ -37,6 +41,7 @@ public class Customer {
     }
 
     @Basic
+
     @Column(name = "password")
     public String getPassword() {
         return password;

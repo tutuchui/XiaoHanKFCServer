@@ -144,16 +144,15 @@ CREATE TABLE manage_employee
     CONSTRAINT `fkey14` FOREIGN KEY (`admin_id`) REFERENCES `admin` (`admin_id`)
 ) DEFAULT CHARSET = utf8;
 
+Drop table if exists manage_order;
 CREATE TABLE manage_order
 (
     manage_order_id  int(11)          NOT NULL AUTO_INCREMENT,
-    employee_id      INT(10)  not null,
     product_order_id int(11)          NOT NULL,
     order_status     int(1)           NOT NULL DEFAULT 0,
     payment_status   int(1)           NOT NULL DEFAULT 0,
     manage_time      datetime,
     PRIMARY KEY (manage_order_id),
-    CONSTRAINT `fkey15` FOREIGN KEY (`employee_id`) REFERENCES `employee` (`employee_id`),
     CONSTRAINT `fkey16` FOREIGN KEY (`product_order_id`) REFERENCES `product_order` (`product_order_id`)
 ) DEFAULT CHARSET = utf8;
 

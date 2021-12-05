@@ -8,6 +8,7 @@ import java.util.Objects;
 @Table(name = "manage_order", schema = "han_fc", catalog = "")
 public class ManageOrder {
     private int manageOrderId;
+    private int productOrderId;
     private int orderStatus;
     private int paymentStatus;
     private Timestamp manageTime;
@@ -20,6 +21,15 @@ public class ManageOrder {
 
     public void setManageOrderId(int manageOrderId) {
         this.manageOrderId = manageOrderId;
+    }
+
+    @Column(name = "product_order_id")
+    public int getProductOrderId() {
+        return productOrderId;
+    }
+
+    public void setProductOrderId(int productOrderId) {
+        this.productOrderId = productOrderId;
     }
 
     @Basic

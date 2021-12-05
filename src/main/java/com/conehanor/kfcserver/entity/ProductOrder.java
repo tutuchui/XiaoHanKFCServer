@@ -8,6 +8,7 @@ import java.util.Objects;
 @Table(name = "product_order", schema = "han_fc", catalog = "")
 public class ProductOrder {
     private int productOrderId;
+    private int customerId;
     private int price;
     private Timestamp orderDate;
 
@@ -39,6 +40,16 @@ public class ProductOrder {
 
     public void setOrderDate(Timestamp orderDate) {
         this.orderDate = orderDate;
+    }
+
+    @Basic
+    @Column(name = "customer_id")
+    public int getCustomerId() {
+        return customerId;
+    }
+
+    public void setCustomerId(int customerId) {
+        this.customerId = customerId;
     }
 
     @Override
