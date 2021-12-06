@@ -3,12 +3,12 @@ package com.conehanor.kfcserver.controller;
 import com.conehanor.kfcserver.dao.IngredientsListRepository;
 import com.conehanor.kfcserver.dao.IngredientsRepository;
 import com.conehanor.kfcserver.dao.ProductRepository;
-import com.conehanor.kfcserver.entity.Ingredients;
-import com.conehanor.kfcserver.entity.IngredientsList;
-import com.conehanor.kfcserver.entity.IngredientsListPK;
-import com.conehanor.kfcserver.entity.Product;
+import com.conehanor.kfcserver.dao.PurchaseIngredientsRepository;
+import com.conehanor.kfcserver.entity.*;
+import com.conehanor.kfcserver.model.IngredientForAdmin;
 import com.conehanor.kfcserver.model.IngredientForProduct;
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +19,8 @@ import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -38,6 +40,9 @@ public class ProductController {
 
     @Autowired
     IngredientsListRepository ingredientsListRepository;
+
+    @Autowired
+    PurchaseIngredientsRepository purchaseIngredientsRepository;
 
     @PostMapping("/upload")
     public ResponseEntity<String> upload(@RequestParam("body") String body, @RequestParam("file") MultipartFile file) {
@@ -117,6 +122,18 @@ public class ProductController {
     @GetMapping("/getAllIngredients")
     public ResponseEntity<String> getAllIngredients(){
         List<Ingredients> ingredientsList = ingredientsRepository.findAll();
+        List<IngredientForAdmin> ingredientForAdminList = new ArrayList<>();
+        for(Ingredients ingredients: ingredientsList){
+            IngredientForAdmin ingredientForAdmin = new IngredientForAdmin();
+            ingredientForAdmin.setIngredientsId(ingredients.getIngredientsId());
+            ingredientForAdmin.setCategory(ingredients.getCategory());
+            ingredientForAdmin.setMerchant(ingredients.getMerchant());
+            ingredientForAdmin.setPrice(ingredients.getPrice());
+            ingredientForAdmin.setName(ingredients.getName());
+            ingredientForAdmin.setIntroduction(ingredients.getIntroduction());
+            //calculate remain number
+
+        }
         return new ResponseEntity<>(gson.toJson(ingredientsList), HttpStatus.OK);
     }
 
@@ -165,6 +182,20 @@ public class ProductController {
         Ingredients ingredients = gson.fromJson(body, Ingredients.class);
         ingredientsRepository.saveAndFlush(ingredients);
         return new ResponseEntity<>("SUCCESS", HttpStatus.OK);
+    }
+
+    @PostMapping("/purchaseIngredients")
+    public ResponseEntity<String> purchaseIngredients(@RequestBody String body){
+        JsonObject jsonObject = gson.fromJson(body, JsonObject.class);
+        int ingredientsId = jsonObject.get("ingredientsId").getAsInt();
+        int number = jsonObject.get("number").getAsInt();
+        PurchaseIngredients purchaseIngredients = new PurchaseIngredients();
+        purchaseIngredients.setIngredientsId(ingredientsId);
+        purchaseIngredients.setNumber(number);
+        purchaseIngredients.setAdminId(1);
+        purchaseIngredients.setPurchaseTime(new Timestamp(System.currentTimeMillis()));
+        purchaseIngredientsRepository.saveAndFlush(purchaseIngredients);
+        return new ResponseEntity<>(gson.toJson("SUCCESSS"), HttpStatus.OK);
     }
 
 }

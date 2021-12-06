@@ -8,6 +8,8 @@ import java.util.Objects;
 @Table(name = "purchase_ingredients", schema = "han_fc", catalog = "")
 public class PurchaseIngredients {
     private int purchaseIngredientsId;
+    private int ingredientsId;
+    private int adminId;
     private int number;
     private Timestamp purchaseTime;
 
@@ -19,6 +21,24 @@ public class PurchaseIngredients {
 
     public void setPurchaseIngredientsId(int purchaseIngredientsId) {
         this.purchaseIngredientsId = purchaseIngredientsId;
+    }
+
+    @Column(name = "ingredients_id")
+    public int getIngredientsId() {
+        return ingredientsId;
+    }
+
+    public void setIngredientsId(int ingredientsId) {
+        this.ingredientsId = ingredientsId;
+    }
+
+    @Column(name = "admin_id")
+    public int getAdminId() {
+        return adminId;
+    }
+
+    public void setAdminId(int adminId) {
+        this.adminId = adminId;
     }
 
     @Basic
