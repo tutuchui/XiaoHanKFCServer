@@ -160,4 +160,11 @@ public class ProductController {
 
     }
 
+    @PostMapping("/addIngredient")
+    public ResponseEntity<String>addIngredient(@RequestBody String body){
+        Ingredients ingredients = gson.fromJson(body, Ingredients.class);
+        ingredientsRepository.saveAndFlush(ingredients);
+        return new ResponseEntity<>("SUCCESS", HttpStatus.OK);
+    }
+
 }

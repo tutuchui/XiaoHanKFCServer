@@ -9,6 +9,8 @@ import java.util.Objects;
 public class ManageEmployee {
     private int manageEmployeeId;
     private int manageType;
+    private int employeeId;
+    private int adminId;
     private Timestamp manageTime;
 
     @Id
@@ -39,6 +41,24 @@ public class ManageEmployee {
 
     public void setManageTime(Timestamp manageTime) {
         this.manageTime = manageTime;
+    }
+
+    @Column(name = "employee_id")
+    public int getEmployeeId() {
+        return employeeId;
+    }
+
+    public void setEmployeeId(int employeeId) {
+        this.employeeId = employeeId;
+    }
+
+    @Column(name = "admin_Id")
+    public int getAdminId() {
+        return adminId;
+    }
+
+    public void setAdminId(int adminId) {
+        this.adminId = adminId;
     }
 
     @Override

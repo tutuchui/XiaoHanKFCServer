@@ -1,9 +1,6 @@
 package com.conehanor.kfcserver.controller;
 
-import com.conehanor.kfcserver.dao.CustomerRepository;
-import com.conehanor.kfcserver.dao.EmployeeRepository;
-import com.conehanor.kfcserver.dao.ManageOrderRepository;
-import com.conehanor.kfcserver.dao.ProductOrderRepository;
+import com.conehanor.kfcserver.dao.*;
 import com.conehanor.kfcserver.entity.*;
 import com.conehanor.kfcserver.model.OrderDetailForEmployee;
 import com.conehanor.kfcserver.model.OrderForEmployee;
@@ -15,6 +12,13 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.transaction.Transactional;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.sql.Timestamp;
+import java.util.Optional;
 
 @RestController
 @CrossOrigin
@@ -34,6 +38,9 @@ public class EmployeeController {
 
     @Autowired
     ManageOrderRepository manageOrderRepository;
+
+    @Autowired
+    ManageEmployeeRepository manageEmployeeRepository;
 
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody String body){
@@ -90,4 +97,52 @@ public class EmployeeController {
 
         return new ResponseEntity<>(gson.toJson(orderDetailForEmployee), HttpStatus.OK);
     }
+
+    @PostMapping("/addEmployee")
+    @Transactional
+    public ResponseEntity<String> addEmployee(@RequestBody String body){
+        Employee employee = gson.fromJson(body, Employee.class);
+        employee.setEmployeeId(generateEmployeeId());
+        employeeRepository.saveAndFlush(employee);
+        ManageEmployee manageEmployee = new ManageEmployee();
+        manageEmployee.setEmployeeId(employee.getEmployeeId()); ;
+        manageEmployee.setAdminId(1);
+        manageEmployee.setManageTime(new Timestamp(System.currentTimeMillis()));
+        manageEmployee.setManageType(0);
+        manageEmployeeRepository.saveAndFlush(manageEmployee);
+        return new ResponseEntity<>("SUCCESS", HttpStatus.OK);
+    }
+
+    private int generateEmployeeId(){
+        if(employeeRepository.findLatestEmployeeId().size() > 0){
+            return employeeRepository.findLatestEmployeeId().get(0).getEmployeeId() + 1;
+        }else{
+            return 1;
+        }
+    }
+
+    @GetMapping("/getAllEmployee")
+    public ResponseEntity<String> getAllEmployee(){
+        return new ResponseEntity<>(gson.toJson(employeeRepository.findAll()), HttpStatus.OK);
+    }
+
+    @PostMapping("/fire")
+    @Transactional
+    public ResponseEntity<String> fireEmployee(@RequestParam("employeeNumber") String employeeNumber)
+    {
+        try {
+            employeeRepository.updateProductState(1,employeeNumber);
+            Employee employee = employeeRepository.findByNumber(employeeNumber);
+            ManageEmployee manageEmployee = new ManageEmployee();
+            manageEmployee.setEmployeeId(employee.getEmployeeId());
+            manageEmployee.setAdminId(1);
+            manageEmployee.setManageType(1);
+            manageEmployee.setManageTime(new Timestamp(System.currentTimeMillis()));
+            manageEmployeeRepository.saveAndFlush(manageEmployee);
+            return new ResponseEntity<>(gson.toJson("SUCCESS"), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(gson.toJson("ERROR"), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 }
