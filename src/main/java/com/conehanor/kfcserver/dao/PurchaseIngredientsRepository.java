@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 public interface PurchaseIngredientsRepository extends JpaRepository<PurchaseIngredients, Integer> {
+    @Query("select sum(i.number) as sum from PurchaseIngredients i where i.ingredientsId = :ingredientsId group by i.ingredientsId")
+    Integer getTotalPurchaseIngredients(int ingredientsId);
     @Query("select sum(i.number) from PurchaseIngredients i where i.ingredientsId = :ingredientsId group by i.ingredientsId")
     int getTotalPurchaseIngredients(int ingredientsId);
 

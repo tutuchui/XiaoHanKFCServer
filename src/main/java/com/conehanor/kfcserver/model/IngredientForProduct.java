@@ -7,6 +7,7 @@ public class IngredientForProduct {
     private String merchant;
     private double price;
     private int count;
+    private int remainCount;
 
     public IngredientForProduct(int ingredientId, String ingredientName, String merchant, double price, int count) {
         this.ingredientId = ingredientId;
@@ -54,5 +55,13 @@ public class IngredientForProduct {
 
     public void setCount(int count) {
         this.count = count;
+    }
+
+    public int getRemainCount() {
+        return remainCount;
+    }
+
+    public void setRemainCount(int remainCount) {
+        this.remainCount = remainCount;
     }
 }

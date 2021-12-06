@@ -10,6 +10,8 @@ import java.util.Objects;
 @Entity
 public class Production {
     private int productionId;
+    private int productId;
+    private int adminId;
     private int number;
     private Timestamp productionTime;
 
@@ -21,6 +23,24 @@ public class Production {
 
     public void setProductionId(int productionId) {
         this.productionId = productionId;
+    }
+
+    @Column(name = "product_id")
+    public int getProductId() {
+        return productId;
+    }
+
+    public void setProductId(int productId) {
+        this.productId = productId;
+    }
+
+    @Column(name = "admin_id")
+    public int getAdminId() {
+        return adminId;
+    }
+
+    public void setAdminId(int adminId) {
+        this.adminId = adminId;
     }
 
     @Basic
