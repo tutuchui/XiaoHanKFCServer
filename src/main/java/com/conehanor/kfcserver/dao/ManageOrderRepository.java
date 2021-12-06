@@ -7,9 +7,8 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 public interface ManageOrderRepository extends JpaRepository<ManageOrder, Integer> {
-    @Query("select m from ManageOrder m where m.productOrderId = :productOrderId order by m.manageTime desc")
-    ManageOrder findLatestStatusByProductOrderId(int productOrderId);
 
     @Query("select m from ManageOrder m where m.productOrderId = :productOrderId order by m.manageTime desc")
     List<ManageOrder> findAllByOrderId(int productOrderId);
+
 }

@@ -13,6 +13,8 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.AbstractPageRequest;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -102,7 +104,12 @@ public class CustomerController {
     }
 
     private int generateOrderId() {
-        return productOrderRepository.getOrderCount() + 1;
+        ProductOrder latestProductOrder =  productOrderRepository.findFirstByProductOrderId();
+        if(latestProductOrder == null){
+            return 1;
+        }else{
+            return latestProductOrder.getProductOrderId() + 1;
+        }
     }
 
 }

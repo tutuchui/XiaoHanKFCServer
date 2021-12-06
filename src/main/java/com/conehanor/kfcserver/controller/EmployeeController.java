@@ -63,7 +63,7 @@ public class EmployeeController {
         List<OrderForEmployee> orderForEmployeeList = new ArrayList<>();
         for(ProductOrder productOrder: productOrderList){
             Customer customer = customerRepository.findById(productOrder.getCustomerId()).get();
-            ManageOrder manageOrder = manageOrderRepository.findLatestStatusByProductOrderId(productOrder.getProductOrderId());
+            ManageOrder manageOrder = manageOrderRepository.findAllByOrderId(productOrder.getProductOrderId()).get(0);
             OrderForEmployee orderForEmployee = new OrderForEmployee();
             orderForEmployee.setOrderId(productOrder.getProductOrderId());
             orderForEmployee.setCustomerName(customer.getName());
@@ -97,6 +97,19 @@ public class EmployeeController {
 
         return new ResponseEntity<>(gson.toJson(orderDetailForEmployee), HttpStatus.OK);
     }
+
+    @PostMapping("/updateOrderStatus")
+    public ResponseEntity<String> updateOrderStatus(@RequestBody String body){
+        OrderDetailForEmployee orderDetailForEmployee = gson.fromJson(body, OrderDetailForEmployee.class);
+        ManageOrder manageOrder = new ManageOrder();
+        manageOrder.setProductOrderId(orderDetailForEmployee.getOrderId());
+        manageOrder.setPaymentStatus(orderDetailForEmployee.getPaymentStatus());
+        manageOrder.setOrderStatus(orderDetailForEmployee.getOrderStatus());
+        manageOrder.setManageTime(new Timestamp(System.currentTimeMillis()));
+        manageOrderRepository.saveAndFlush(manageOrder);
+        return new ResponseEntity<>(gson.toJson("SUCCESS"), HttpStatus.OK);
+    }
+
 
     @PostMapping("/addEmployee")
     @Transactional

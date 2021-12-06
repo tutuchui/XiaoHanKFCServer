@@ -4,7 +4,10 @@ import com.conehanor.kfcserver.entity.ProductOrder;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.awt.print.Pageable;
+import java.util.List;
+
 public interface ProductOrderRepository extends JpaRepository<ProductOrder, Integer> {
-    @Query("select count(po) from ProductOrder po")
-    int getOrderCount();
+    @Query("select po from ProductOrder po order by po.productOrderId")
+    ProductOrder findFirstByProductOrderId();
 }
