@@ -7,6 +7,7 @@ public class ProductForAdmin {
     private String category;
     private String introduction;
     private int state;
+    private String imageUrl;
     private int remainCount;
 
     public int getProductId() {
@@ -63,5 +64,13 @@ public class ProductForAdmin {
 
     public void setRemainCount(int remainCount) {
         this.remainCount = remainCount;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 }

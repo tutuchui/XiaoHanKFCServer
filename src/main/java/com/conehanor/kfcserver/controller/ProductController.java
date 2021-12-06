@@ -89,6 +89,7 @@ public class ProductController {
             productForAdmin.setProductId(product.getProductId());
             productForAdmin.setPrice(product.getPrice());
             productForAdmin.setState(product.getState());
+            productForAdmin.setImageUrl(product.getImageUrl());
             productForAdmin.setCategory(product.getCategory());
             productForAdmin.setIntroduction(product.getIntroduction());
             productForAdmin.setName(product.getName());
