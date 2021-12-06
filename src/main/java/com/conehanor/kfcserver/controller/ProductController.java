@@ -198,4 +198,10 @@ public class ProductController {
         return new ResponseEntity<>(gson.toJson("SUCCESSS"), HttpStatus.OK);
     }
 
+    @GetMapping("/getPurchaseIngredientsRecordById")
+    public ResponseEntity<String> getPurchaseIngredientsRecordById(@RequestParam("ingredientsId") int ingredientsId){
+        List<PurchaseIngredients> purchaseIngredients =  purchaseIngredientsRepository.getPurchaseIngredientsRecordById(ingredientsId);
+        return new ResponseEntity<>(gson.toJson(purchaseIngredients), HttpStatus.OK);
+    }
+
 }

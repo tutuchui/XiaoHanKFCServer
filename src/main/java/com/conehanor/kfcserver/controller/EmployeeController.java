@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.Console;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -158,4 +159,32 @@ public class EmployeeController {
         }
     }
 
+    @GetMapping("/getEmployeeById")
+    public ResponseEntity<String> getEmployeeById(@RequestParam("employeeId") int employeeId)
+    {
+//          Optional<Employee> employee = employeeRepository.findById(employeeId);
+        Employee employee = employeeRepository.findById(employeeId).get();
+        return new ResponseEntity<>(gson.toJson(employee), HttpStatus.OK);
+    }
+
+    @GetMapping("/getAddTimeById")
+    public ResponseEntity<String> getAddTimeById(@RequestParam("employeeId") int employeeId)
+    {
+        Timestamp addTime = manageEmployeeRepository.getAddTimeById(employeeId);
+        return new ResponseEntity<>(gson.toJson(addTime.toString()), HttpStatus.OK);
+    }
+
+    @GetMapping("/getFireTimeById")
+    public ResponseEntity<String> getFireTimeById(@RequestParam("employeeId") int employeeId)
+    {
+        Timestamp timestamp = manageEmployeeRepository.getFireTimeById(employeeId);
+        String string = "暂时没有解聘";
+        if(timestamp == null)
+        {
+            return new ResponseEntity<>(gson.toJson(string), HttpStatus.OK);
+        }else
+        {
+            return new ResponseEntity<>(gson.toJson(timestamp.toString()), HttpStatus.OK);
+        }
+    }
 }
