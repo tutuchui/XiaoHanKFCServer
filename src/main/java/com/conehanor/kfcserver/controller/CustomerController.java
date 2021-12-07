@@ -1,26 +1,22 @@
 package com.conehanor.kfcserver.controller;
 
-import com.conehanor.kfcserver.dao.CustomerRepository;
-import com.conehanor.kfcserver.dao.ManageOrderRepository;
-import com.conehanor.kfcserver.dao.OrderDetailRepository;
-import com.conehanor.kfcserver.dao.ProductOrderRepository;
-import com.conehanor.kfcserver.entity.Customer;
-import com.conehanor.kfcserver.entity.ManageOrder;
-import com.conehanor.kfcserver.entity.OrderDetail;
-import com.conehanor.kfcserver.entity.ProductOrder;
+import com.conehanor.kfcserver.dao.*;
+import com.conehanor.kfcserver.entity.*;
+import com.conehanor.kfcserver.model.OrderDetailForCustomer;
+import com.conehanor.kfcserver.model.OrderForCustomer;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.AbstractPageRequest;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @RestController
@@ -38,6 +34,9 @@ public class CustomerController {
 
     @Autowired
     OrderDetailRepository orderDetailRepository;
+
+    @Autowired
+    ProductRepository productRepository;
 
     @Autowired
     ManageOrderRepository manageOrderRepository;
@@ -105,7 +104,23 @@ public class CustomerController {
 
     @GetMapping("/getOrdersForCustomer")
     public ResponseEntity<String> getOrdersForCustomer(@RequestParam("customerId")int customerId){
-        return null;
+        Customer customer = customerRepository.findById(customerId).get();
+        List<ProductOrder> productOrderList = productOrderRepository.getOrdersByCustomerId(customerId);
+        List<OrderForCustomer> orderForCustomerList = new ArrayList<>();
+        for(ProductOrder productOrder: productOrderList){
+            ManageOrder manageOrder = manageOrderRepository.findAllByOrderId(productOrder.getProductOrderId()).get(0);
+            OrderForCustomer orderForCustomer = new OrderForCustomer();
+            orderForCustomer.setCustomerName(customer.getName());
+            orderForCustomer.setOrderId(productOrder.getProductOrderId());
+            orderForCustomer.setOrderTime(productOrder.getOrderDate());
+            orderForCustomer.setPhone(customer.getPhone());
+            orderForCustomer.setPaymentStatus(manageOrder.getPaymentStatus());
+            orderForCustomer.setOrderStatus(manageOrder.getOrderStatus());
+            orderForCustomer.setTotalPrice(productOrder.getPrice());
+            orderForCustomerList.add(orderForCustomer);
+        }
+
+        return new ResponseEntity<>(gson.toJson(orderForCustomerList), HttpStatus.OK);
     }
 
     private int generateOrderId() {
@@ -115,6 +130,38 @@ public class CustomerController {
         }else{
             return latestProductOrder.getProductOrderId() + 1;
         }
+    }
+
+    @GetMapping("/getOrderDetail")
+    public ResponseEntity<String> getOrderDetail(@RequestParam("orderId")int orderId){
+        List<OrderDetail> orderDetailList = orderDetailRepository.getOrderDetailByOrderId(orderId);
+        List<OrderDetailForCustomer> orderDetailForCustomerList = new ArrayList<>();
+        for(OrderDetail orderDetail: orderDetailList){
+            OrderDetailForCustomer orderDetailForCustomer = new OrderDetailForCustomer();
+            orderDetailForCustomer.setProductId(orderDetail.getProductId());
+            orderDetailForCustomer.setNumber(orderDetail.getNumber());
+            String productName = productRepository.findById(orderDetail.getProductId()).get().getName();
+            orderDetailForCustomer.setProductName(productName);
+            orderDetailForCustomerList.add(orderDetailForCustomer);
+        }
+
+        return new ResponseEntity<>(gson.toJson(orderDetailForCustomerList), HttpStatus.OK);
+    }
+
+    @PostMapping("/payOrder")
+    public ResponseEntity<String> payOrder(@RequestBody String requestBody){
+        JsonObject jsonObject = gson.fromJson(requestBody, JsonObject.class);
+        int orderId = jsonObject.get("orderId").getAsInt();
+        int orderStatus = jsonObject.get("orderStatus").getAsInt();
+
+        ManageOrder manageOrder = new ManageOrder();
+        manageOrder.setProductOrderId(orderId);
+        manageOrder.setOrderStatus(orderStatus);
+        manageOrder.setPaymentStatus(1);
+        manageOrder.setManageTime(new Timestamp(System.currentTimeMillis()));
+
+        manageOrderRepository.saveAndFlush(manageOrder);
+        return new ResponseEntity<>(gson.toJson("SUCCESS"), HttpStatus.OK);
     }
 
 }

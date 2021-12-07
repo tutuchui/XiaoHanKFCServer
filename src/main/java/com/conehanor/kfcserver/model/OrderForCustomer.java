@@ -7,8 +7,8 @@ public class OrderForCustomer {
     private String customerName;
     private String phone;
     private double totalPrice;
-    private int paymentState;
-    private int orderState;
+    private int paymentStatus;
+    private int orderStatus;
     private Timestamp orderTime;
 
     public int getOrderId() {
@@ -43,20 +43,20 @@ public class OrderForCustomer {
         this.totalPrice = totalPrice;
     }
 
-    public int getPaymentState() {
-        return paymentState;
+    public int getPaymentStatus() {
+        return paymentStatus;
     }
 
-    public void setPaymentState(int paymentState) {
-        this.paymentState = paymentState;
+    public void setPaymentStatus(int paymentStatus) {
+        this.paymentStatus = paymentStatus;
     }
 
-    public int getOrderState() {
-        return orderState;
+    public int getOrderStatus() {
+        return orderStatus;
     }
 
-    public void setOrderState(int orderState) {
-        this.orderState = orderState;
+    public void setOrderStatus(int orderStatus) {
+        this.orderStatus = orderStatus;
     }
 
     public Timestamp getOrderTime() {
