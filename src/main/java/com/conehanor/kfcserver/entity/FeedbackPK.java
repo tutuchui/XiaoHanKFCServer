@@ -7,7 +7,7 @@ import java.util.Objects;
 
 public class FeedbackPK implements Serializable {
     private int suggestionId;
-    private int adminId;
+    private int employeeId;
 
     @Column(name = "suggestion_id")
     @Id
@@ -19,26 +19,14 @@ public class FeedbackPK implements Serializable {
         this.suggestionId = suggestionId;
     }
 
-    @Column(name = "admin_id")
+    @Column(name = "employee_id")
     @Id
-    public int getAdminId() {
-        return adminId;
+    public int getEmployeeId() {
+        return employeeId;
     }
 
-    public void setAdminId(int adminId) {
-        this.adminId = adminId;
+    public void setEmployeeId(int employeeId) {
+        this.employeeId = employeeId;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        FeedbackPK that = (FeedbackPK) o;
-        return suggestionId == that.suggestionId && adminId == that.adminId;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(suggestionId, adminId);
-    }
 }

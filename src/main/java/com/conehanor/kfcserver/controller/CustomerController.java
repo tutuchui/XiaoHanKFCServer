@@ -103,6 +103,11 @@ public class CustomerController {
         }
     }
 
+    @GetMapping("/getOrdersForCustomer")
+    public ResponseEntity<String> getOrdersForCustomer(@RequestParam("customerId")int customerId){
+        return null;
+    }
+
     private int generateOrderId() {
         ProductOrder latestProductOrder =  productOrderRepository.findFirstByProductOrderId();
         if(latestProductOrder == null){

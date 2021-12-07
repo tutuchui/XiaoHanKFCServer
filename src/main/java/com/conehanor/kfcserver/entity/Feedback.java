@@ -29,8 +29,8 @@ public class Feedback {
         return employeeId;
     }
 
-    public void setEmployeeId(int adminId) {
-        this.employeeId = adminId;
+    public void setEmployeeId(int employeeId) {
+        this.employeeId = employeeId;
     }
 
     @Column(name = "state")
