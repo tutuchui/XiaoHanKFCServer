@@ -8,9 +8,10 @@ import java.util.Objects;
 @IdClass(FeedbackPK.class)
 public class Feedback {
     private int suggestionId;
-    private int adminId;
+    private int employeeId;
     private Timestamp feedbackTime;
     private String content;
+    private int state;
 
     @Id
     @Column(name = "suggestion_id")
@@ -23,13 +24,22 @@ public class Feedback {
     }
 
     @Id
-    @Column(name = "admin_id")
-    public int getAdminId() {
-        return adminId;
+    @Column(name = "employee_id")
+    public int getEmployeeId() {
+        return employeeId;
     }
 
-    public void setAdminId(int adminId) {
-        this.adminId = adminId;
+    public void setEmployeeId(int adminId) {
+        this.employeeId = adminId;
+    }
+
+    @Column(name = "state")
+    public int getState() {
+        return state;
+    }
+
+    public void setState(int state) {
+        this.state = state;
     }
 
     @Basic
@@ -57,11 +67,11 @@ public class Feedback {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Feedback feedback = (Feedback) o;
-        return suggestionId == feedback.suggestionId && adminId == feedback.adminId && Objects.equals(feedbackTime, feedback.feedbackTime) && Objects.equals(content, feedback.content);
+        return suggestionId == feedback.suggestionId && employeeId == feedback.employeeId && Objects.equals(feedbackTime, feedback.feedbackTime) && Objects.equals(content, feedback.content);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(suggestionId, adminId, feedbackTime, content);
+        return Objects.hash(suggestionId, employeeId, feedbackTime, content);
     }
 }

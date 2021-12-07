@@ -120,15 +120,16 @@ CREATE TABLE purchase_ingredients
     CONSTRAINT `fkey9` FOREIGN KEY (`ingredients_id`) REFERENCES `ingredients` (`ingredients_id`),
     CONSTRAINT `fkey10` FOREIGN KEY (`admin_id`) REFERENCES `admin` (`admin_id`)
 ) DEFAULT CHARSET = utf8;
-
+drop table if exists feedback;
 CREATE TABLE feedback
 (
     suggestion_id int(11)          NOT NULL,
-    admin_id      int(10)  NOT NULL,
+    employee_id      int(10)  NOT NULL,
     feedback_time datetime         NOT NULL,
+    state int(1) NOT NULL,
     content       varchar(255)     NOT NULL DEFAULT 0,
-    PRIMARY KEY (suggestion_id, admin_id),
-    CONSTRAINT `fkey11` FOREIGN KEY (`admin_id`) REFERENCES `admin` (`admin_id`),
+    PRIMARY KEY (suggestion_id, employee_id),
+    CONSTRAINT `fkey11` FOREIGN KEY (`employee_id`) REFERENCES `employee` (`employee_id`),
     CONSTRAINT `fkey12` FOREIGN KEY (`suggestion_id`) REFERENCES `suggestion` (`suggestion_id`)
 ) DEFAULT CHARSET = utf8;
 
