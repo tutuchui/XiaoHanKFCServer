@@ -12,6 +12,7 @@ public class Suggestion {
     private int suggestionId;
     private String content;
     private Timestamp suggestTime;
+    private int customerId;
 
     @Id
     @Column(name = "suggestion_id")
@@ -31,6 +32,16 @@ public class Suggestion {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    @Basic
+    @Column(name = "customer_id")
+    public int getCustomerId() {
+        return customerId;
+    }
+
+    public void setCustomerId(int customer_id) {
+        this.customerId = customer_id;
     }
 
     @Basic
