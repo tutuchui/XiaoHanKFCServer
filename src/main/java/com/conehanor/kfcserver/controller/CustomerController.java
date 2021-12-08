@@ -44,6 +44,9 @@ public class CustomerController {
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public ResponseEntity<String> register(@RequestBody String body) {
         Customer customer = gson.fromJson(body, Customer.class);
+        if(customerRepository.findCustomerByPhone(customer.getPhone())!=null){
+            return new ResponseEntity<>(gson.toJson("Phone Number Already Register"), HttpStatus.SERVICE_UNAVAILABLE);
+        }
         customerRepository.saveAndFlush(customer);
         return new ResponseEntity<>(gson.toJson("SUCCESS"), HttpStatus.OK);
     }
@@ -124,7 +127,7 @@ public class CustomerController {
     }
 
     private int generateOrderId() {
-        ProductOrder latestProductOrder =  productOrderRepository.findFirstByProductOrderId();
+        ProductOrder latestProductOrder =  productOrderRepository.findFirstByProductOrderId().get(0);
         if(latestProductOrder == null){
             return 1;
         }else{

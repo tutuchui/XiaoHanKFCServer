@@ -8,9 +8,12 @@ import java.awt.print.Pageable;
 import java.util.List;
 
 public interface ProductOrderRepository extends JpaRepository<ProductOrder, Integer> {
-    @Query("select po from ProductOrder po order by po.productOrderId")
-    ProductOrder findFirstByProductOrderId();
+    @Query("select po from ProductOrder po order by po.productOrderId desc")
+    List<ProductOrder> findFirstByProductOrderId();
 
     @Query("select po from ProductOrder po where po.customerId = :customerId order by po.orderDate desc")
     List<ProductOrder> getOrdersByCustomerId(int customerId);
+
+    @Query("select count(o) from ProductOrder o")
+    int getProductOrderCount();
 }

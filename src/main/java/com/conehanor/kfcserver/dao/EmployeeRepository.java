@@ -26,5 +26,20 @@ public interface EmployeeRepository extends JpaRepository<Employee, Integer> {
     @Query("select e from Employee e order by e.employeeId desc")
     List<Employee> findLatestEmployeeId();
 
+    @Query("select count(e) from Employee e where e.state = :state")
+    int getCurrentEmployeeCount(int state);
+
+    @Query("select count(e) from Employee e where e.type = :type")
+    int getEmployeeByType(int type);
+
+    @Query("select count(e) from Employee e where e.gender = :gender")
+    int getEmployeeByGender(int gender);
+
+    //SELECT * FROM 表名 WHERE DATE_FORMAT( 时间字段名, '%Y%m' ) = DATE_FORMAT( CURDATE( ) , '%Y%m' )
+    @Query(value = "select count(*) from manage_employee where date_format(manage_employee.manage_time, '%Y%m') = date_format(current_date(), '%Y%m') and manage_employee.manage_type = 0;", nativeQuery = true)
+    int getEmployeeRecruitCurMonth();
+
+    @Query(value = "select count(*) from manage_employee where date_format(manage_employee.manage_time, '%Y%m') = date_format(current_date(), '%Y%m') and manage_employee.manage_type = 1;", nativeQuery = true)
+    int getEmployeeFireCurMonth();
 
 }

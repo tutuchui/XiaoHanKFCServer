@@ -2,6 +2,7 @@ package com.conehanor.kfcserver.controller;
 
 import com.conehanor.kfcserver.dao.*;
 import com.conehanor.kfcserver.entity.*;
+import com.conehanor.kfcserver.model.HanfcStatics;
 import com.conehanor.kfcserver.model.OrderDetailForEmployee;
 import com.conehanor.kfcserver.model.OrderForEmployee;
 import com.google.gson.Gson;
@@ -43,13 +44,15 @@ public class EmployeeController {
     @Autowired
     ManageEmployeeRepository manageEmployeeRepository;
 
+    @Autowired
+    SuggestionRepository suggestionRepository;
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody String body){
         Employee employee = gson.fromJson(body, Employee.class);
         Employee targetEmployee = employeeRepository.findByNumber(employee.getNumber());
-        if(targetEmployee != null && employee.getPassword().equals(targetEmployee.getPassword())){
+        if(targetEmployee != null && employee.getPassword().equals(targetEmployee.getPassword()) && targetEmployee.getState() != 1){
             return new ResponseEntity<>(gson.toJson(targetEmployee.getName()), HttpStatus.OK);
-        }else if(targetEmployee == null){
+        }else if(targetEmployee == null || targetEmployee.getState() == 1){
             return new ResponseEntity<>(gson.toJson("ERROR"), HttpStatus.NOT_IMPLEMENTED);
         }else if(!targetEmployee.getPassword().equals(employee.getPassword())){
             return new ResponseEntity<>(gson.toJson("ERROR"), HttpStatus.BAD_GATEWAY);
@@ -187,4 +190,6 @@ public class EmployeeController {
             return new ResponseEntity<>(gson.toJson(timestamp.toString()), HttpStatus.OK);
         }
     }
+
+
 }
