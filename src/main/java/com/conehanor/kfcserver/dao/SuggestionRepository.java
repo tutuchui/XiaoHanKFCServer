@@ -11,4 +11,7 @@ public interface SuggestionRepository extends JpaRepository<Suggestion, Integer>
 
     @Query("select a from Suggestion a where a.customerId = :customerId")
     List<Suggestion> findByCustomerId(int customerId);
+
+    @Query(value = "SELECT COUNT(*) FROM suggestion" ,nativeQuery = true)
+    int getSuggestionCount();
 }
