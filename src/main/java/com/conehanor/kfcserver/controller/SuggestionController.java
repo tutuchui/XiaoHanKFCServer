@@ -1,6 +1,7 @@
 package com.conehanor.kfcserver.controller;
 
 
+import com.conehanor.kfcserver.dao.FeedbackRepository;
 import com.conehanor.kfcserver.dao.SuggestionRepository;
 import com.conehanor.kfcserver.entity.Employee;
 import com.conehanor.kfcserver.entity.Suggestion;
@@ -27,6 +28,9 @@ public class SuggestionController {
     @Autowired
     SuggestionRepository suggestionRepository;
 
+    @Autowired
+    FeedbackRepository feedbackRepository;
+
     @GetMapping("/getAllSuggestion")
     public ResponseEntity<String> getAllSuggestion() {
         List<SuggestionForEmployee> suggestions = suggestionRepository.getAllSuggestionsForEmployee();
@@ -46,5 +50,14 @@ public class SuggestionController {
         suggestionRepository.saveAndFlush(suggestion);
         return new ResponseEntity<>(gson.toJson("success"), HttpStatus.OK);
     }
+
+    @GetMapping("/getNumberForSuggestionBox")
+    public ResponseEntity<String> getNumberForSuggestionBox() {
+        int a =suggestionRepository.getSuggestionCount();
+        int b =feedbackRepository.getPassFeedbackCount();
+        int c = a - b;
+        return new ResponseEntity<>(gson.toJson(c), HttpStatus.OK);
+    }
+
 
 }
