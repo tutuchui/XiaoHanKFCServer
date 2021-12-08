@@ -19,4 +19,5 @@ public interface SuggestionRepository extends JpaRepository<Suggestion, Integer>
     @Query(value = "SELECT COUNT(s) FROM Suggestion s")
     int getSuggestionCount();
 
+
 }

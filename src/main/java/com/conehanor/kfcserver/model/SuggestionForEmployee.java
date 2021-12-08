@@ -2,6 +2,7 @@ package com.conehanor.kfcserver.model;
 
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.Stack;
 
 public class SuggestionForEmployee {
     private int suggestionId;
@@ -10,14 +11,24 @@ public class SuggestionForEmployee {
     private String phone;
     private int customerId;
     private String customerName;
+    private Integer state;
 
-    public SuggestionForEmployee(int suggestionId, String content, String phone, Date suggestTime, int customerId, String customerName) {
+    public SuggestionForEmployee(int suggestionId, String content, String phone, Date suggestTime, int customerId, String customerName ) {
         this.suggestionId = suggestionId;
         this.content = content;
         this.phone = phone;
         this.suggestTime = suggestTime;
         this.customerId = customerId;
         this.customerName = customerName;
+
+    }
+
+    public Integer getState() {
+        return state;
+    }
+
+    public void setState(Integer state) {
+        this.state = state;
     }
 
     public String getPhone() {

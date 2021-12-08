@@ -190,6 +190,4 @@ public class EmployeeController {
             return new ResponseEntity<>(gson.toJson(timestamp.toString()), HttpStatus.OK);
         }
     }
-
-
 }

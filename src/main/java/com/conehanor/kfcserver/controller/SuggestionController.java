@@ -34,6 +34,11 @@ public class SuggestionController {
     @GetMapping("/getAllSuggestion")
     public ResponseEntity<String> getAllSuggestion() {
         List<SuggestionForEmployee> suggestions = suggestionRepository.getAllSuggestionsForEmployee();
+        for(SuggestionForEmployee suggestion: suggestions){
+            Integer state = feedbackRepository.getFeedbackStateBySuggestionId(suggestion.getSuggestionId());
+            suggestion.setState(state);
+        }
+
         return new ResponseEntity<>(gson.toJson(suggestions), HttpStatus.OK);
     }
 
