@@ -4,6 +4,7 @@ package com.conehanor.kfcserver.controller;
 import com.conehanor.kfcserver.dao.SuggestionRepository;
 import com.conehanor.kfcserver.entity.Employee;
 import com.conehanor.kfcserver.entity.Suggestion;
+import com.conehanor.kfcserver.model.SuggestionForEmployee;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,7 +29,7 @@ public class SuggestionController {
 
     @GetMapping("/getAllSuggestion")
     public ResponseEntity<String> getAllSuggestion() {
-        List<Suggestion> suggestions = suggestionRepository.findAll();
+        List<SuggestionForEmployee> suggestions = suggestionRepository.getAllSuggestionsForEmployee();
         return new ResponseEntity<>(gson.toJson(suggestions), HttpStatus.OK);
     }
 
