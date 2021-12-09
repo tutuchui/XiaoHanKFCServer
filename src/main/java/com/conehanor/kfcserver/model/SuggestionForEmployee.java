@@ -13,6 +13,7 @@ public class SuggestionForEmployee {
     private String customerName;
     private Integer state;
 
+
     public SuggestionForEmployee(int suggestionId, String content, String phone, Date suggestTime, int customerId, String customerName ) {
         this.suggestionId = suggestionId;
         this.content = content;
@@ -22,6 +23,11 @@ public class SuggestionForEmployee {
         this.customerName = customerName;
 
     }
+    public String getEmployeeName() { return employeeName; }
+
+    public void setEmployeeName(String employeeName) { this.employeeName = employeeName; }
+
+    private String employeeName;
 
     public Integer getState() {
         return state;

@@ -1,6 +1,7 @@
 package com.conehanor.kfcserver.controller;
 
 
+import com.conehanor.kfcserver.dao.EmployeeRepository;
 import com.conehanor.kfcserver.dao.FeedbackRepository;
 import com.conehanor.kfcserver.dao.SuggestionRepository;
 import com.conehanor.kfcserver.entity.Employee;
@@ -30,6 +31,9 @@ public class SuggestionController {
 
     @Autowired
     FeedbackRepository feedbackRepository;
+
+    @Autowired
+    EmployeeRepository employeeRepository;
 
     @GetMapping("/getAllSuggestion")
     public ResponseEntity<String> getAllSuggestion() {
