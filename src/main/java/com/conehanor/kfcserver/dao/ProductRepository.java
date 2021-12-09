@@ -16,4 +16,10 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
     @Transactional
     @Modifying
     int updateProductState(int state, int productId);
+
+    @Query("select count(p) from Product p where p.price >= :minPrice and p.price < :maxPrice")
+    int getProductCountByPrice(double minPrice, double maxPrice);
+
+    @Query("select count(p) from Product p where p.category = :category")
+    int getProductCountByCategory(String category);
 }

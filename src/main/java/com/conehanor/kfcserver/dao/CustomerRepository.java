@@ -10,4 +10,9 @@ public interface CustomerRepository extends JpaRepository<Customer, Integer> {
 
     @Query("select count(c) from Customer c")
     int getCustomerCount();
+
+    @Query("select count(c) from Customer c where c.gender = :gender")
+    int getCustomerCountByGender(int gender);
+
+
 }

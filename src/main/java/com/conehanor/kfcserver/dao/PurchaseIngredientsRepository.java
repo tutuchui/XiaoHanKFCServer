@@ -12,4 +12,6 @@ public interface PurchaseIngredientsRepository extends JpaRepository<PurchaseIng
 
     @Query("select i from PurchaseIngredients i where i.ingredientsId = :ingredientsId")
     List<PurchaseIngredients> getPurchaseIngredientsRecordById(int ingredientsId);
+
+
 }

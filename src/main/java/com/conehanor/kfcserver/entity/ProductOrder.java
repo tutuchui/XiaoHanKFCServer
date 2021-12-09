@@ -9,7 +9,7 @@ import java.util.Objects;
 public class ProductOrder {
     private int productOrderId;
     private int customerId;
-    private int price;
+    private double price;
     private Timestamp orderDate;
 
     @Id
@@ -24,11 +24,11 @@ public class ProductOrder {
 
     @Basic
     @Column(name = "price")
-    public int getPrice() {
+    public double getPrice() {
         return price;
     }
 
-    public void setPrice(int price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 

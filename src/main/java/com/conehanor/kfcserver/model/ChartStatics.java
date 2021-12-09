@@ -17,7 +17,127 @@ public class ChartStatics {
     private int customerBoy;
     private int customerGirl;
 
+    private SuggestionStatics suggestionStatics;
     private List<ProductStatics> productStaticsList;
+    private List<IngredientsStatics> ingredientsStaticsList;
+
+    private int allProductCount;
+    private int activeProductCount;
+
+    private int productCountPriceInterval1;
+    private int productCountPriceInterval2;
+    private int productCountPriceInterval3;
+    private int productCountPriceInterval4;
+
+    private int mainMealCount;
+    private int snackCount;
+    private int dessertCount;
+    private int friesChickenCount;
+
+    private int orderCountInterval1;
+    private int orderCountInterval2;
+    private int orderCountInterval3;
+    private int orderCountInterval4;
+
+    private List<OrderStatics> orderStaticsList;
+
+    public int getMainMealCount() {
+        return mainMealCount;
+    }
+
+    public void setMainMealCount(int mainMealCount) {
+        this.mainMealCount = mainMealCount;
+    }
+
+    public int getSnackCount() {
+        return snackCount;
+    }
+
+    public void setSnackCount(int snackCount) {
+        this.snackCount = snackCount;
+    }
+
+    public int getDessertCount() {
+        return dessertCount;
+    }
+
+    public void setDessertCount(int dessertCount) {
+        this.dessertCount = dessertCount;
+    }
+
+    public int getFriesChickenCount() {
+        return friesChickenCount;
+    }
+
+    public void setFriesChickenCount(int friesChickenCount) {
+        this.friesChickenCount = friesChickenCount;
+    }
+
+    public int getProductCountPriceInterval1() {
+        return productCountPriceInterval1;
+    }
+
+    public void setProductCountPriceInterval1(int productCountPriceInterval1) {
+        this.productCountPriceInterval1 = productCountPriceInterval1;
+    }
+
+    public int getProductCountPriceInterval2() {
+        return productCountPriceInterval2;
+    }
+
+    public void setProductCountPriceInterval2(int productCountPriceInterval2) {
+        this.productCountPriceInterval2 = productCountPriceInterval2;
+    }
+
+    public int getProductCountPriceInterval3() {
+        return productCountPriceInterval3;
+    }
+
+    public void setProductCountPriceInterval3(int productCountPriceInterval3) {
+        this.productCountPriceInterval3 = productCountPriceInterval3;
+    }
+
+    public int getProductCountPriceInterval4() {
+        return productCountPriceInterval4;
+    }
+
+    public void setProductCountPriceInterval4(int productCountPriceInterval4) {
+        this.productCountPriceInterval4 = productCountPriceInterval4;
+    }
+
+    public int getAllProductCount() {
+        return allProductCount;
+    }
+
+    public void setAllProductCount(int allProductCount) {
+        this.allProductCount = allProductCount;
+    }
+
+    public int getActiveProductCount() {
+        return activeProductCount;
+    }
+
+    public void setActiveProductCount(int activeProductCount) {
+        this.activeProductCount = activeProductCount;
+    }
+
+
+
+    public SuggestionStatics getSuggestionStatics() {
+        return suggestionStatics;
+    }
+
+    public void setSuggestionStatics(SuggestionStatics suggestionStatics) {
+        this.suggestionStatics = suggestionStatics;
+    }
+
+    public List<IngredientsStatics> getIngredientsStaticsList() {
+        return ingredientsStaticsList;
+    }
+
+    public void setIngredientsStaticsList(List<IngredientsStatics> ingredientsStaticsList) {
+        this.ingredientsStaticsList = ingredientsStaticsList;
+    }
 
     public List<ProductStatics> getProductStaticsList() {
         return productStaticsList;
@@ -105,5 +225,45 @@ public class ChartStatics {
 
     public void setCustomerGirl(int customerGirl) {
         this.customerGirl = customerGirl;
+    }
+
+    public List<OrderStatics> getOrderStaticsList() {
+        return orderStaticsList;
+    }
+
+    public void setOrderStaticsList(List<OrderStatics> orderStaticsList) {
+        this.orderStaticsList = orderStaticsList;
+    }
+
+    public int getOrderCountInterval1() {
+        return orderCountInterval1;
+    }
+
+    public void setOrderCountInterval1(int orderCountInterval1) {
+        this.orderCountInterval1 = orderCountInterval1;
+    }
+
+    public int getOrderCountInterval2() {
+        return orderCountInterval2;
+    }
+
+    public void setOrderCountInterval2(int orderCountInterval2) {
+        this.orderCountInterval2 = orderCountInterval2;
+    }
+
+    public int getOrderCountInterval3() {
+        return orderCountInterval3;
+    }
+
+    public void setOrderCountInterval3(int orderCountInterval3) {
+        this.orderCountInterval3 = orderCountInterval3;
+    }
+
+    public int getOrderCountInterval4() {
+        return orderCountInterval4;
+    }
+
+    public void setOrderCountInterval4(int orderCountInterval4) {
+        this.orderCountInterval4 = orderCountInterval4;
     }
 }
