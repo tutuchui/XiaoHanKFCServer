@@ -127,12 +127,8 @@ public class CustomerController {
     }
 
     private int generateOrderId() {
-        ProductOrder latestProductOrder =  productOrderRepository.findFirstByProductOrderId().get(0);
-        if(latestProductOrder == null){
-            return 1;
-        }else{
-            return latestProductOrder.getProductOrderId() + 1;
-        }
+        return productOrderRepository.generateOrderId() + 1;
+
     }
 
     @GetMapping("/getOrderDetail")

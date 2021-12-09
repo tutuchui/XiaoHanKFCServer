@@ -2,7 +2,6 @@ package com.conehanor.kfcserver.controller;
 
 import com.conehanor.kfcserver.dao.*;
 import com.conehanor.kfcserver.entity.*;
-import com.conehanor.kfcserver.model.HanfcStatics;
 import com.conehanor.kfcserver.model.OrderDetailForEmployee;
 import com.conehanor.kfcserver.model.OrderForEmployee;
 import com.google.gson.Gson;
@@ -11,16 +10,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.Console;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.transaction.Transactional;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.sql.Timestamp;
-import java.util.Optional;
 
 @RestController
 @CrossOrigin
@@ -51,7 +45,7 @@ public class EmployeeController {
         Employee employee = gson.fromJson(body, Employee.class);
         Employee targetEmployee = employeeRepository.findByNumber(employee.getNumber());
         if(targetEmployee != null && employee.getPassword().equals(targetEmployee.getPassword()) && targetEmployee.getState() != 1){
-            return new ResponseEntity<>(gson.toJson(targetEmployee.getName()), HttpStatus.OK);
+            return new ResponseEntity<>(gson.toJson(targetEmployee), HttpStatus.OK);
         }else if(targetEmployee == null || targetEmployee.getState() == 1){
             return new ResponseEntity<>(gson.toJson("ERROR"), HttpStatus.NOT_IMPLEMENTED);
         }else if(!targetEmployee.getPassword().equals(employee.getPassword())){
@@ -148,7 +142,7 @@ public class EmployeeController {
     public ResponseEntity<String> fireEmployee(@RequestParam("employeeNumber") String employeeNumber)
     {
         try {
-            employeeRepository.updateProductState(1,employeeNumber);
+            employeeRepository.updateEmployeeState(1,employeeNumber);
             Employee employee = employeeRepository.findByNumber(employeeNumber);
             ManageEmployee manageEmployee = new ManageEmployee();
             manageEmployee.setEmployeeId(employee.getEmployeeId());
@@ -191,5 +185,10 @@ public class EmployeeController {
         }
     }
 
-
+    @PostMapping("/updateEmployeeInfo")
+    public  ResponseEntity<String> updateEmployeeInfo(@RequestBody String body) {
+        Employee employee = gson.fromJson(body, Employee.class);
+        employeeRepository.updateEmployeeInfo(employee.getName(),employee.getNumber(),employee.getPhone(),employee.getPassword(),employee.getEmail(),employee.getEmployeeId());
+        return new ResponseEntity<>("SUCCESS", HttpStatus.OK);
+    }
 }
