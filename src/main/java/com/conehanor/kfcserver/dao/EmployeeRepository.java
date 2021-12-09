@@ -21,7 +21,7 @@ public interface EmployeeRepository extends JpaRepository<Employee, Integer> {
     @Query("update Employee  e set e.state = :state where e.number = :employeeNumber")
     @Transactional
     @Modifying
-    int updateProductState(int state, String employeeNumber);
+    int updateEmployeeState(int state, String employeeNumber);
 
     @Query("select e from Employee e order by e.employeeId desc")
     List<Employee> findLatestEmployeeId();
@@ -45,5 +45,10 @@ public interface EmployeeRepository extends JpaRepository<Employee, Integer> {
 
     @Query(value = "select count(*) from manage_employee where date_format(manage_employee.manage_time, '%Y%m') = date_format(current_date(), '%Y%m') and manage_employee.manage_type = 1;", nativeQuery = true)
     int getEmployeeFireCurMonth();
+
+    @Query("update Employee  e set e.name = :name, e.number =:number, e.phone = :phone , e.password =:password, e.email =:email where e.employeeId = :employeeId")
+    @Transactional
+    @Modifying
+    int updateEmployeeInfo(String name,String number,String phone,String password,String email,int employeeId);
 
 }
